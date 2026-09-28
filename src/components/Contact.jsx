@@ -79,18 +79,23 @@ export const Contact = () => {
               </div>
             </div>
 
-            <div className="channel-card">
+            <a
+              href="https://github.com/jitendrachoudhary1401-hue"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="channel-card"
+            >
               <div className="channel-icon" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8B5CF6' }}>
                 <GithubIcon size={22} />
               </div>
               <div>
                 <div className="channel-label">Open Source & Code</div>
-                <div className="channel-val">GitHub Workspace</div>
+                <div className="channel-val">github.com/jitendrachoudhary1401-hue</div>
                 <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-                  View repositories, experiment code, and project development
+                  View repositories, project code, and development
                 </div>
               </div>
-            </div>
+            </a>
 
             <div className="channel-card">
               <div className="channel-icon" style={{ background: 'rgba(56, 189, 248, 0.1)', color: '#38BDF8' }}>

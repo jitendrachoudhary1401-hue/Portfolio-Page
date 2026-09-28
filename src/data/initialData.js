@@ -51,9 +51,9 @@ export const personalInfo = {
     nextMilestone: 'Deploying initial Flutter utility application and integrating Firebase real-time data layer.'
   },
   contact: {
-    email: '', // Add email if available or provide interactive form
-    github: '', // Add GitHub URL when ready
-    linkedin: '', // Add LinkedIn URL when ready
+    email: '',
+    github: 'https://github.com/jitendrachoudhary1401-hue',
+    linkedin: '',
     location: 'India'
   }
 };
