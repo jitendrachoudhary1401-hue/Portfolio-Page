@@ -36,7 +36,7 @@ export function App() {
 
         <main id="main-content">
           {/* 02: Hero Section */}
-          <Hero />
+          <Hero onOpenAdmin={() => setIsAdminOpen(true)} />
 
           {/* 03: Quick Identity Strip */}
           <IdentityStrip />

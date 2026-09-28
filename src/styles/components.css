@@ -191,19 +191,247 @@
   margin-bottom: 20px;
 }
 
+.hero-name-and-image-container {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-bottom: 20px;
+}
+
+.hero-name-col {
+  flex: 1;
+}
+
+/* ==============================================================================
+   ANIMATED HERO PORTRAIT (RIGHT SIDE OF NAME)
+   ============================================================================== */
+.hero-portrait-showcase {
+  flex-shrink: 0;
+  position: relative;
+  perspective: 1000px;
+}
+
+.hero-portrait-frame {
+  position: relative;
+  width: 185px;
+  height: 225px;
+  border-radius: var(--radius-md);
+  padding: 3px;
+  background: linear-gradient(135deg, rgba(79, 140, 255, 0.6) 0%, rgba(139, 92, 246, 0.4) 50%, rgba(56, 189, 248, 0.6) 100%);
+  background-size: 200% 200%;
+  animation: heroCardLevitate 5s ease-in-out infinite, borderShift 6s ease infinite;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(79, 140, 255, 0.2);
+  cursor: pointer;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.hero-portrait-frame:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.7), 0 0 35px rgba(139, 92, 246, 0.4);
+}
+
+@keyframes heroCardLevitate {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes borderShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.hero-portrait-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: calc(var(--radius-md) - 3px);
+  background: #0E131C;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-portrait-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.hero-portrait-frame:hover .hero-portrait-img {
+  transform: scale(1.05);
+}
+
+.hero-portrait-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px;
+  text-align: center;
+  background: radial-gradient(circle at center, rgba(79, 140, 255, 0.08) 0%, transparent 70%);
+}
+
+.hero-portrait-initials {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(79, 140, 255, 0.12);
+  border: 1.5px solid rgba(79, 140, 255, 0.4);
+  color: var(--accent-blue);
+  font-family: var(--font-mono);
+  font-size: 1.35rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 16px rgba(79, 140, 255, 0.3);
+}
+
+.hero-fallback-text {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.hero-fallback-sub {
+  font-size: 0.7rem;
+  color: var(--accent-blue);
+  font-family: var(--font-mono);
+  background: rgba(79, 140, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+
+/* Floating Tech Pills */
+.hero-floating-pill {
+  position: absolute;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(14, 19, 28, 0.92);
+  border: 1px solid var(--border-active);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 4px 9px;
+  border-radius: 20px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+}
+
+.pill-top {
+  top: -12px;
+  right: -10px;
+  animation: pillFloatTop 4s ease-in-out infinite;
+}
+
+.pill-bottom {
+  bottom: 22px;
+  left: -16px;
+  animation: pillFloatBottom 4.5s ease-in-out infinite;
+}
+
+@keyframes pillFloatTop {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes pillFloatBottom {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
+/* Status radar dot */
+.hero-portrait-status {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(11, 13, 18, 0.95);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: #34D399;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+}
+
+.status-radar-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10B981;
+  position: relative;
+}
+
+.status-radar-dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid #10B981;
+  animation: radarPing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes radarPing {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* Tech corner brackets */
+.hero-tech-bracket {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: var(--accent-cyan);
+  opacity: 0.8;
+  z-index: 5;
+}
+.bracket-tl { top: 5px; left: 5px; border-top: 2px solid; border-left: 2px solid; }
+.bracket-tr { top: 5px; right: 5px; border-top: 2px solid; border-right: 2px solid; }
+.bracket-bl { bottom: 5px; left: 5px; border-bottom: 2px solid; border-left: 2px solid; }
+.bracket-br { bottom: 5px; right: 5px; border-bottom: 2px solid; border-right: 2px solid; }
+
 .hero-tagline {
-  font-size: 1.45rem;
+  font-size: 1.35rem;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 16px;
+  margin-top: 8px;
+  margin-bottom: 0;
   letter-spacing: -0.01em;
 }
 
 .hero-intro {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   color: var(--text-secondary);
   line-height: 1.65;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
   max-width: 540px;
 }
 
@@ -343,60 +571,6 @@
   font-size: 0.85rem;
   color: var(--text-muted);
   line-height: 1.4;
-}
-
-/* Profile Photo & Portrait Card */
-.hero-profile-row {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 18px;
-}
-
-.hero-avatar-frame {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  padding: 3px;
-  background: var(--grad-primary);
-  box-shadow: 0 0 20px rgba(79, 140, 255, 0.35);
-  position: relative;
-  flex-shrink: 0;
-}
-
-.hero-avatar-img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  background: #121722;
-  display: block;
-}
-
-.hero-avatar-placeholder {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: #121722;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent-blue);
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: 1.5rem;
-}
-
-.hero-avatar-pulse {
-  position: absolute;
-  bottom: 2px;
-  right: 2px;
-  width: 14px;
-  height: 14px;
-  background: #10B981;
-  border: 2px solid var(--bg-main);
-  border-radius: 50%;
-  box-shadow: 0 0 8px #10B981;
 }
 
 /* About Section Profile Card */

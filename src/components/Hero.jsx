@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Mail, Terminal as TerminalIcon, Code2, Sparkles, User } from 'lucide-react';
+import { ArrowRight, Mail, Terminal as TerminalIcon, Code2, Sparkles, User, Camera } from 'lucide-react';
 import { personalInfo } from '../data/initialData';
 import { subscribeToProfilePhoto } from '../services/profileService';
 
-export const Hero = () => {
+export const Hero = ({ onOpenAdmin }) => {
   const [photoUrl, setPhotoUrl] = useState('');
   const [imgError, setImgError] = useState(false);
 
@@ -20,40 +20,82 @@ export const Hero = () => {
       <div className="hero-glow" aria-hidden="true" />
 
       <div className="container hero-grid">
-        {/* Left Column: Introduction & CTAs */}
+        {/* Left Column: Introduction, Name + Animated Portrait, & CTAs */}
         <div className="hero-content">
-          <div className="hero-profile-row">
-            <div className="hero-avatar-frame">
-              {photoUrl && !imgError ? (
-                <img
-                  src={photoUrl}
-                  alt="Jitendra Choudhary"
-                  className="hero-avatar-img"
-                  onError={() => setImgError(true)}
-                />
-              ) : (
-                <div className="hero-avatar-placeholder">JC</div>
-              )}
-              <div className="hero-avatar-pulse" title="Active & Building" />
-            </div>
-
-            <div>
-              <div className="hero-greeting">
-                <TerminalIcon size={15} />
-                <span>&gt; hello, I'm</span>
-              </div>
-              <span className="hero-role-badge" style={{ marginBottom: 0 }}>
-                <Code2 size={15} />
-                {personalInfo.role}
-              </span>
-            </div>
+          <div className="hero-greeting">
+            <TerminalIcon size={15} />
+            <span>&gt; hello, I'm</span>
+            <span className="hero-role-badge" style={{ marginBottom: 0 }}>
+              <Code2 size={14} />
+              {personalInfo.role}
+            </span>
           </div>
 
-          <h1 className="hero-name">
-            JITENDRA<br />CHOUDHARY
-          </h1>
+          {/* Name & Animated Portrait Frame Side-by-Side */}
+          <div className="hero-name-and-image-container">
+            <div className="hero-name-col">
+              <h1 className="hero-name">
+                JITENDRA<br />CHOUDHARY
+              </h1>
+              <h2 className="hero-tagline">{personalInfo.tagline}</h2>
+            </div>
 
-          <h2 className="hero-tagline">{personalInfo.tagline}</h2>
+            {/* Animated Portrait Frame on the Right Side of Name */}
+            <div className="hero-portrait-showcase">
+              <div 
+                className="hero-portrait-frame" 
+                onClick={onOpenAdmin} 
+                title="Click to manage/update profile photo"
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onOpenAdmin && onOpenAdmin(); }}
+              >
+                {/* Tech Corner Brackets */}
+                <span className="hero-tech-bracket bracket-tl" />
+                <span className="hero-tech-bracket bracket-tr" />
+                <span className="hero-tech-bracket bracket-bl" />
+                <span className="hero-tech-bracket bracket-br" />
+
+                {/* Floating Tech Chips */}
+                <div className="hero-floating-pill pill-top">
+                  <Sparkles size={11} color="#38BDF8" />
+                  <span>CSE • AI/ML</span>
+                </div>
+
+                <div className="hero-floating-pill pill-bottom">
+                  <Code2 size={11} color="#8B5CF6" />
+                  <span>Flutter • Python</span>
+                </div>
+
+                {/* Inner Image Container */}
+                <div className="hero-portrait-inner">
+                  {photoUrl && !imgError ? (
+                    <img
+                      src={photoUrl}
+                      alt="Jitendra Choudhary"
+                      className="hero-portrait-img"
+                      onError={() => setImgError(true)}
+                    />
+                  ) : (
+                    <div className="hero-portrait-fallback">
+                      <div className="hero-portrait-initials">JC</div>
+                      <span className="hero-fallback-text">Photo Space</span>
+                      <span className="hero-fallback-sub">
+                        <Camera size={11} style={{ display: 'inline', marginRight: '3px' }} />
+                        Upload
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Active Radar Status Pill */}
+                <div className="hero-portrait-status">
+                  <span className="status-radar-dot" />
+                  <span>Active & Building</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <p className="hero-intro">{personalInfo.heroIntro}</p>
 
