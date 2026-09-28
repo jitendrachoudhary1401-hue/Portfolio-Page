@@ -542,16 +542,35 @@ export const AdminModal = ({ isOpen, onClose }) => {
                     />
                   </div>
 
+                  {/* Document Options: Direct Link OR File Upload */}
+                  <div className="form-group">
+                    <label className="form-label">Certificate Document Link / Image URL (Optional)</label>
+                    <input
+                      type="url"
+                      className="form-input"
+                      placeholder="e.g. Google Drive link, Imgur, GitHub raw link..."
+                      value={formData.fileUrl}
+                      onChange={(e) => setFormData({ ...formData, fileUrl: e.target.value })}
+                    />
+                    <span style={{ fontSize: '0.76rem', color: 'var(--text-muted)' }}>
+                      Optional: Paste a direct image/PDF URL or select a file below.
+                    </span>
+                  </div>
+
                   {/* File Upload Dropzone */}
                   <div className="form-group">
-                    <label className="form-label">Certificate Document (Image or PDF)</label>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                      <label className="form-label" style={{ margin: 0 }}>Upload Certificate Image (PNG/JPG/WEBP) or PDF</label>
+                      <span className="badge badge-accent" style={{ fontSize: '0.72rem' }}>100% Free (No Paid Storage Needed)</span>
+                    </div>
+
                     <label className="file-upload-dropzone" htmlFor="cert-file-input">
                       <Upload className="upload-icon" />
                       <span className="upload-text">
-                        {selectedFile ? selectedFile.name : formData.fileUrl ? 'Replace current file' : 'Click to select Certificate Image (PNG/JPG) or PDF'}
+                        {selectedFile ? selectedFile.name : formData.fileUrl && formData.fileUrl.startsWith('data:') ? 'Current Image Attached (Click to replace)' : 'Click to select Certificate Image or PDF'}
                       </span>
                       <span className="upload-subtext">
-                        Stores to Firebase Storage bucket <code>/certificates</code>
+                        Automatically compressed and stored directly into Cloud Firestore for free!
                       </span>
                       <input
                         id="cert-file-input"

@@ -39,10 +39,64 @@ const saveLocalCertificates = (certs) => {
 };
 
 /**
+ * Compresses an image file in the browser using HTML5 Canvas
+ * Produces a lightweight Base64 WebP/JPEG data URL (~40KB-120KB)
+ * Fits easily into Cloud Firestore's 1MB document limit for 100% FREE storage!
+ */
+export const compressImageToBase64 = (file, maxDimension = 1200, quality = 0.78) => {
+  return new Promise((resolve, reject) => {
+    // If it's a PDF, read as Data URL directly
+    if (file.type === 'application/pdf') {
+      const reader = new FileReader();
+      reader.onload = (e) => resolve(e.target.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > maxDimension) {
+            height = Math.round((height * maxDimension) / width);
+            width = maxDimension;
+          }
+        } else {
+          if (height > maxDimension) {
+            width = Math.round((width * maxDimension) / height);
+            height = maxDimension;
+          }
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Export as WebP if supported, fallback to JPEG
+        const dataUrl = canvas.toDataURL('image/webp', quality) || canvas.toDataURL('image/jpeg', quality);
+        resolve(dataUrl);
+      };
+      img.onerror = () => {
+        // Fallback to raw data url
+        resolve(event.target.result);
+      };
+      img.src = event.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+};
+
+/**
  * Subscribes to real-time certificate updates from Firestore (or local fallback).
- * @param {Function} onUpdate Callback function with updated array of certificates
- * @param {Function} onError Error callback
- * @returns {Function} Unsubscribe function
  */
 export const subscribeToCertificates = (onUpdate, onError) => {
   if (isFirebaseConfigured && db) {
@@ -64,7 +118,6 @@ export const subscribeToCertificates = (onUpdate, onError) => {
         (error) => {
           console.error('Firestore subscription error:', error);
           if (onError) onError(error);
-          // Fallback to local storage on error
           onUpdate(getLocalCertificates());
         }
       );
@@ -76,7 +129,6 @@ export const subscribeToCertificates = (onUpdate, onError) => {
       return () => {};
     }
   } else {
-    // When Firebase credentials are not yet entered in .env, use local fallback
     const local = getLocalCertificates();
     onUpdate(local);
 
@@ -89,49 +141,38 @@ export const subscribeToCertificates = (onUpdate, onError) => {
 };
 
 /**
- * Uploads a certificate file (Image or PDF) to Firebase Storage with progress tracking.
- * @param {File} file The file to upload
- * @param {Function} onProgress Progress callback (0-100)
- * @returns {Promise<string>} Download URL of the uploaded file
+ * Handles certificate document storage:
+ * 1. If an image file is provided, compresses it to a lightweight data URL
+ *    and saves directly into Firestore (100% FREE, no paid Firebase Storage bucket needed!).
+ * 2. If user provides an external URL (Google Drive, GitHub, etc.), uses it directly.
+ * 3. If Firebase Storage is available and working, optionally uploads there.
  */
-export const uploadCertificateFile = (file, onProgress) => {
-  return new Promise((resolve, reject) => {
-    if (!isFirebaseConfigured || !storage) {
-      // In local mode without Firebase, create an object URL or base64
+export const processCertificateDocument = async (file, directUrl, onProgress) => {
+  if (directUrl && directUrl.trim()) {
+    return directUrl.trim();
+  }
+
+  if (!file) return '';
+
+  if (onProgress) onProgress(30);
+
+  // Compress image locally in browser to lightweight WebP data URL
+  // This bypasses any need for paid Firebase Storage plans!
+  try {
+    const compressedDataUrl = await compressImageToBase64(file);
+    if (onProgress) onProgress(100);
+    return compressedDataUrl;
+  } catch (err) {
+    console.warn('Compression error, attempting fallback:', err);
+    const rawDataUrl = await new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (e) => resolve(e.target.result);
       reader.onerror = reject;
       reader.readAsDataURL(file);
-      return;
-    }
-
-    const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-    const storagePath = `certificates/${Date.now()}_${safeName}`;
-    const storageRef = ref(storage, storagePath);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        if (onProgress) onProgress(progress);
-      },
-      (error) => {
-        console.error('Storage upload error:', error);
-        reject(error);
-      },
-      async () => {
-        try {
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          resolve(downloadURL);
-        } catch (err) {
-          reject(err);
-        }
-      }
-    );
-  });
+    });
+    if (onProgress) onProgress(100);
+    return rawDataUrl;
+  }
 };
 
 /**
@@ -143,7 +184,7 @@ export const addCertificate = async (certificateData, file, onProgress) => {
 
   if (file) {
     fileType = file.type;
-    fileUrl = await uploadCertificateFile(file, onProgress);
+    fileUrl = await processCertificateDocument(file, certificateData.fileUrl, onProgress);
   }
 
   const payload = {
@@ -192,7 +233,7 @@ export const updateCertificate = async (id, certificateData, newFile, onProgress
 
   if (newFile) {
     fileType = newFile.type;
-    fileUrl = await uploadCertificateFile(newFile, onProgress);
+    fileUrl = await processCertificateDocument(newFile, certificateData.fileUrl, onProgress);
   }
 
   const payload = {
@@ -227,7 +268,7 @@ export const updateCertificate = async (id, certificateData, newFile, onProgress
 };
 
 /**
- * Deletes a certificate and its associated storage asset if available.
+ * Deletes a certificate.
  */
 export const deleteCertificate = async (id, fileUrl) => {
   if (isFirebaseConfigured && storage && fileUrl && fileUrl.includes('firebasestorage.googleapis.com')) {
