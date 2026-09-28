@@ -9,31 +9,31 @@ service cloud.firestore {
     
     // Certificates collection:
     // Anyone can read (to view on public portfolio)
-    // Only authenticated admin can create, update, or delete
+    // Authenticated admin can create, update, or delete
     match /certificates/{certificateId} {
       allow read: if true;
       allow write: if isAdmin();
     }
     
-    // Projects collection (for dynamic project sync):
-    // Anyone can read
-    // Only authenticated admin can write
+    // Profile & site settings (photo, preferences):
+    match /settings/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // Projects collection:
     match /projects/{projectId} {
       allow read: if true;
       allow write: if isAdmin();
     }
     
     // Achievements collection:
-    // Anyone can read
-    // Only authenticated admin can write
     match /achievements/{achievementId} {
       allow read: if true;
       allow write: if isAdmin();
     }
     
-    // Contact messages collection:
-    // Anyone can submit a message with validation
-    // Only authenticated admin can read or delete
+    // Contact inquiries:
     match /contacts/{messageId} {
       allow create: if request.resource.data.name is string
                     && request.resource.data.email is string
