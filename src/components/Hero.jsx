@@ -1,8 +1,20 @@
-import React from 'react';
-import { ArrowRight, Mail, Terminal as TerminalIcon, Code2, Sparkles } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ArrowRight, Mail, Terminal as TerminalIcon, Code2, Sparkles, User } from 'lucide-react';
 import { personalInfo } from '../data/initialData';
+import { subscribeToProfilePhoto } from '../services/profileService';
 
 export const Hero = () => {
+  const [photoUrl, setPhotoUrl] = useState('');
+  const [imgError, setImgError] = useState(false);
+
+  useEffect(() => {
+    const unsub = subscribeToProfilePhoto((url) => {
+      setPhotoUrl(url);
+      setImgError(false);
+    });
+    return () => unsub && unsub();
+  }, []);
+
   return (
     <section id="hero" className="hero-section">
       <div className="hero-glow" aria-hidden="true" />
@@ -10,21 +22,36 @@ export const Hero = () => {
       <div className="container hero-grid">
         {/* Left Column: Introduction & CTAs */}
         <div className="hero-content">
-          <div className="hero-greeting">
-            <TerminalIcon size={16} />
-            <span>&gt; hello, I'm</span>
+          <div className="hero-profile-row">
+            <div className="hero-avatar-frame">
+              {photoUrl && !imgError ? (
+                <img
+                  src={photoUrl}
+                  alt="Jitendra Choudhary"
+                  className="hero-avatar-img"
+                  onError={() => setImgError(true)}
+                />
+              ) : (
+                <div className="hero-avatar-placeholder">JC</div>
+              )}
+              <div className="hero-avatar-pulse" title="Active & Building" />
+            </div>
+
+            <div>
+              <div className="hero-greeting">
+                <TerminalIcon size={15} />
+                <span>&gt; hello, I'm</span>
+              </div>
+              <span className="hero-role-badge" style={{ marginBottom: 0 }}>
+                <Code2 size={15} />
+                {personalInfo.role}
+              </span>
+            </div>
           </div>
 
           <h1 className="hero-name">
             JITENDRA<br />CHOUDHARY
           </h1>
-
-          <div>
-            <span className="hero-role-badge">
-              <Code2 size={16} />
-              {personalInfo.role}
-            </span>
-          </div>
 
           <h2 className="hero-tagline">{personalInfo.tagline}</h2>
 

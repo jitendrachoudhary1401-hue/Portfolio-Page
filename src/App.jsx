@@ -42,7 +42,7 @@ export function App() {
           <IdentityStrip />
 
           {/* 04: About Me */}
-          <About />
+          <About onOpenAdmin={() => setIsAdminOpen(true)} />
 
           {/* 05: Skills & Tech Stack */}
           <Skills />

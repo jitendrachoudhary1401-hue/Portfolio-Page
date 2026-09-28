@@ -14,7 +14,9 @@ import {
   LogOut,
   Database,
   Key,
-  FolderOpen
+  FolderOpen,
+  User,
+  Image as ImageIcon
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { 
@@ -23,6 +25,7 @@ import {
   deleteCertificate, 
   subscribeToCertificates 
 } from '../services/certificateService';
+import { updateProfilePhoto, getLocalProfilePhoto } from '../services/profileService';
 import { firebaseConfigStatus } from '../services/firebase';
 
 export const AdminModal = ({ isOpen, onClose }) => {
@@ -59,9 +62,17 @@ export const AdminModal = ({ isOpen, onClose }) => {
   });
   const [selectedFile, setSelectedFile] = useState(null);
 
+  // Profile Photo State
+  const [currentProfilePhoto, setCurrentProfilePhoto] = useState('');
+  const [profileUrlInput, setProfileUrlInput] = useState('');
+  const [profileFile, setProfileFile] = useState(null);
+  const [profileSaving, setProfileSaving] = useState(false);
+  const [profileMsg, setProfileMsg] = useState({ type: null, text: '' });
+
   // Subscribe to certificates
   useEffect(() => {
     if (!isOpen) return;
+    setCurrentProfilePhoto(getLocalProfilePhoto());
     const unsubscribe = subscribeToCertificates(
       (certs) => setCertificates(certs),
       (err) => console.error('Admin cert subscribe error:', err)
@@ -70,6 +81,27 @@ export const AdminModal = ({ isOpen, onClose }) => {
       if (typeof unsubscribe === 'function') unsubscribe();
     };
   }, [isOpen]);
+
+  const handleSaveProfilePhoto = async (e) => {
+    e.preventDefault();
+    if (!profileFile && !profileUrlInput.trim()) {
+      setProfileMsg({ type: 'error', text: 'Please select an image file or provide an image URL.' });
+      return;
+    }
+    setProfileSaving(true);
+    setProfileMsg({ type: null, text: '' });
+    try {
+      const newUrl = await updateProfilePhoto(profileFile || profileUrlInput.trim());
+      setCurrentProfilePhoto(newUrl);
+      setProfileMsg({ type: 'success', text: 'Profile photo updated successfully!' });
+      setProfileFile(null);
+      setProfileUrlInput('');
+    } catch (err) {
+      setProfileMsg({ type: 'error', text: err.message || 'Failed to update profile photo.' });
+    } finally {
+      setProfileSaving(false);
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -248,6 +280,14 @@ export const AdminModal = ({ isOpen, onClose }) => {
             >
               <Plus size={15} />
               <span>{editingCertId ? 'Edit Certificate' : 'Add New Certificate'}</span>
+            </button>
+
+            <button 
+              className={`admin-tab ${activeTab === 'profile' ? 'active' : ''}`}
+              onClick={() => setActiveTab('profile')}
+            >
+              <User size={15} />
+              <span>Profile Photo</span>
             </button>
 
             <button 
@@ -611,7 +651,93 @@ export const AdminModal = ({ isOpen, onClose }) => {
                 </form>
               )}
 
-              {/* TAB 3: FIREBASE DIAGNOSTICS & SETUP */}
+              {/* TAB 3: PROFILE PHOTO MANAGEMENT */}
+              {activeTab === 'profile' && (
+                <form onSubmit={handleSaveProfilePhoto} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <h4 style={{ color: 'var(--text-primary)', fontSize: '1.05rem', fontWeight: 600 }}>
+                      Manage Profile Photo
+                    </h4>
+                    <span className="badge badge-accent">Live across Hero & About</span>
+                  </div>
+
+                  {profileMsg.text && (
+                    <div style={{
+                      padding: '10px 14px',
+                      borderRadius: 'var(--radius-sm)',
+                      background: profileMsg.type === 'success' ? 'rgba(16, 185, 129, 0.12)' : 'rgba(239, 68, 68, 0.12)',
+                      border: `1px solid ${profileMsg.type === 'success' ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
+                      color: profileMsg.type === 'success' ? '#34D399' : '#F87171',
+                      fontSize: '0.86rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px'
+                    }}>
+                      {profileMsg.type === 'success' ? <Check size={16} /> : <AlertCircle size={16} />}
+                      <span>{profileMsg.text}</span>
+                    </div>
+                  )}
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '24px', background: '#0E131C', padding: '18px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)' }}>
+                    <div style={{ width: '100px', height: '115px', borderRadius: 'var(--radius-sm)', overflow: 'hidden', background: '#121722', border: '2px solid var(--accent-blue)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {currentProfilePhoto ? (
+                        <img src={currentProfilePhoto} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ) : (
+                        <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>JC</span>
+                      )}
+                    </div>
+                    <div>
+                      <h5 style={{ color: 'var(--text-primary)', fontSize: '0.95rem', marginBottom: '4px' }}>Current Photo Preview</h5>
+                      <p style={{ color: 'var(--text-secondary)', fontSize: '0.82rem', lineHeight: '1.5', maxWidth: '420px' }}>
+                        You can upload an image file (PNG, JPG, WEBP) or paste a direct image URL. It will automatically update in the Hero and About sections!
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">Upload New Photo File (Recommended)</label>
+                    <label className="file-upload-dropzone" htmlFor="profile-file-input">
+                      <Upload className="upload-icon" />
+                      <span className="upload-text">
+                        {profileFile ? profileFile.name : 'Click to select Photo from your device'}
+                      </span>
+                      <span className="upload-subtext">
+                        Compressed automatically & saved directly to Firestore for free!
+                      </span>
+                      <input
+                        id="profile-file-input"
+                        type="file"
+                        accept="image/*"
+                        style={{ display: 'none' }}
+                        onChange={(e) => setProfileFile(e.target.files[0] || null)}
+                      />
+                    </label>
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">Or Direct Photo URL</label>
+                    <input
+                      type="url"
+                      className="form-input"
+                      placeholder="https://... (Google Drive, GitHub image URL, etc.)"
+                      value={profileUrlInput}
+                      onChange={(e) => setProfileUrlInput(e.target.value)}
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={profileSaving}
+                    style={{ alignSelf: 'flex-start' }}
+                  >
+                    <Check size={16} />
+                    <span>{profileSaving ? 'Saving Profile Photo...' : 'Save & Update Profile Photo'}</span>
+                  </button>
+                </form>
+              )}
+
+              {/* TAB 4: FIREBASE DIAGNOSTICS & SETUP */}
               {activeTab === 'config' && (
                 <div className="diag-panel">
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
