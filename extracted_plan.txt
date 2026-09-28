@@ -1,0 +1,277 @@
+Jitendra Choudhary — Portfolio UI/UX Plan
+Minimal Tech — Professional + Developer
+This document turns the portfolio direction into a practical page-by-page specification. It defines what each section should communicate, how it should look and behave, and how the experience should adapt across screen sizes. The central decision is a clean, recruiter-friendly portfolio with a restrained developer identity: dark technical atmosphere, generous whitespace, carefully limited blue-to-purple accents, and purposeful interaction.
+Decision area
+Locked direction
+Design direction
+Minimal Tech — Professional + Developer
+Core balance
+Clean like a professional portfolio; technical enough for a developer; personal enough to represent Jitendra.
+Person represented
+CSE / AI-ML student, builder and learner, with visible community contribution.
+Visual character
+Near-black / deep charcoal foundation, clean content surfaces, controlled gradients, readable typography, restrained code aesthetic.
+Experience principle
+Make projects and real contributions easy to understand; use motion and decoration only when they support that purpose.
+How to use this plan
+Treat the named order, overall visual direction and hero copy below as the implementation baseline. Sample descriptions for projects, education, certificates and other personal details are content patterns, not claims: replace placeholders with verified facts, links and dates before launch. Keep the interface content-led and easy to scan.
+1. Design philosophy
+The portfolio must communicate two complementary sides of Jitendra: an engineer who builds and explores software, AI/ML, cybersecurity and Flutter; and a person who contributes through communities, NSS/social impact and Technical Vidya. Neither side should be hidden behind a resume-like layout or a flashy effects showcase.
+Principle
+Design consequence
+Professional first impression
+Clear hierarchy, restrained color, readable body copy and predictable navigation.
+Developer personality
+Terminal motif, monospace accents, technical project details and selective code references.
+Evidence over claims
+Show working projects, actual responsibilities, outcomes and links; avoid unsupported metrics.
+Whitespace and focus
+Give each section a clear purpose; avoid cramming every credential or detail above the fold.
+Personal but credible
+Use a warm first-person voice and real community involvement alongside technical work.
+2. Visual system
+Color and surfaces
+Use a near-black or deep-charcoal page foundation. Separate content from the background through subtle surface contrast, borders and spacing rather than bright panels. Use a blue-to-purple gradient sparingly for primary actions, tiny emphasis, focus/active states and a soft hero glow. Avoid making every section dark in the same way or applying gradients everywhere.
+Role
+Guidance
+Example starting token
+Main canvas
+Near-black/deep charcoal; preserve strong text contrast.
+#0B0D12
+Raised surface
+A slightly lighter charcoal for cards and terminal panel.
+#121722
+Primary text
+Soft white rather than harsh glare.
+#F2F4F8
+Secondary text
+Muted cool gray, still comfortably readable.
+#AAB3C2
+Accent
+Blue to purple; limited to interactive or high-value emphasis.
+#4F8CFF → #8B5CF6
+Borders
+Low-contrast neutral line, visible enough to define a card.
+#263041
+These are implementation starting points, not final brand values. Validate contrast after choosing exact shades. Keep gradient stops and glow opacity low; gradient decoration must never reduce text legibility.
+Typography
+Use
+Treatment
+Display name / section titles
+Clean sans-serif; bold, concise, strong hierarchy. Hero name is the largest text.
+Body
+Neutral sans-serif with comfortable line length and line spacing.
+Terminal / small technical labels
+Monospace, used for command prompts, metadata and short tags only.
+Emphasis
+Weight, size and spacing first; accent color only for selected actions and small highlights.
+Choose a widely available, highly legible sans-serif and a compatible monospace. Keep body text large enough on mobile; avoid long passages in all caps, thin weights on dark backgrounds and using monospace for whole paragraphs.
+3. Site flow and information architecture
+NAVBAR
+  ↓
+HERO → QUICK IDENTITY STRIP
+  ↓
+ABOUT
+  ↓
+FEATURED PROJECTS → PROJECT JOURNEY / BUILD PROCESS
+  ↓
+EXPERIENCE: TECHNICAL VIDYA
+  ↓
+COMMUNITY / SOCIAL IMPACT
+  ↓
+SKILLS → LEARNING JOURNEY
+  ↓
+ACHIEVEMENTS → CERTIFICATES
+  ↓
+EDUCATION
+  ↓
+CURRENTLY BUILDING
+  ↓
+CONTACT
+  ↓
+FOOTER
+The main journey is: understand who Jitendra is, see proof through projects, learn how he works, see team/community involvement, scan skills and growth, verify achievements and education, then make contact. Navigation should let a visitor jump to major sections without forcing a linear read.
+Primary navigation
+JITENDRA                         About   Projects   Experience
+                                  Impact   Skills   Achievements
+                                  [Resume]
+Use a transparent or dark header. On scroll, apply a slight blur and a stable dark backing so links remain legible. Keep Jitendra’s name/mark on the left. The right side links to About, Projects, Experience, Impact, Skills and Achievements; include a Resume action only when a current, accessible resume is available. A compact active-section indicator uses a small gradient underline.
+4. Section-by-section specification
+01 — Navbar
+Purpose: orient visitors and provide fast access to the main content. Keep the brand/name visible, use concise labels, and do not crowd the header with every subsection. On desktop, links sit in one orderly row or a compact two-line arrangement if needed. On mobile, replace the row with a clearly labeled menu button and a simple vertical menu; close it after a selection and return focus appropriately.
+02 — Hero
+Purpose: establish identity, field, working attitude and next action within a few seconds. This is the most important section. Use a two-column desktop composition: text on the left, developer terminal on the right. Stack the terminal beneath the copy on narrow screens.
+> hello, I'm
+JITENDRA
+CHOUDHARY
+CSE • AI/ML STUDENT
+Building. Learning. Exploring.
+I build software, explore AI/ML,
+and turn ideas into practical projects
+while contributing to communities around me.
+[ View Projects ]   [ Connect ]
+Primary action: View Projects, anchored to featured projects. Secondary action: Connect, anchored to contact. Keep labels action-oriented and make both targets reachable by keyboard.
+Developer terminal panel
+┌─────────────────────────────────────┐
+│ JITENDRA@PORTFOLIO ~                │
+│ ──────────────────────────────────  │
+│                                     │
+│ $ whoami                            │
+│ > CSE_AIML_STUDENT                  │
+│                                     │
+│ $ currently_learning                │
+│ > Flutter + Dart                    │
+│                                     │
+│ $ exploring                         │
+│ > AI/ML                             │
+│ > Cybersecurity                     │
+│ > Software Development              │
+│                                     │
+│ $ status                            │
+│ > building...                       │
+└─────────────────────────────────────┘
+Visual treatment: near-black/deep charcoal canvas; very subtle gradient glow behind the terminal; fine technical grid/noise texture at extremely low opacity. Use clean sans-serif outside the panel and monospace inside. Terminal lines may reveal subtly, but all information must remain available without animation.
+03 — Quick identity strip
+Purpose: provide a compact bridge between the hero and deeper content, without repeating a long introduction. Present four concise identity themes and a one-line meaning for each. On desktop, align them in a row; on mobile, use a two-by-two grid or a simple stacked list.
+CSE / AIML       DEVELOPER       AI/ML       COMMUNITY
+Engineering      Projects         Learning    Contribution
+Use restrained labels and short descriptors, not counters or animated statistics unless the values are verified and meaningful.
+04 — About
+Purpose: add the human context that the hero cannot carry. Write one short first-person paragraph (about 60–100 words) covering what Jitendra studies, the kinds of problems he likes working on, how he learns, and why community contribution matters to him. Follow with three short focus points such as building software, exploring AI/ML and contributing with others. Keep it specific and natural; avoid generic claims like “passionate tech enthusiast” unless supported with concrete examples.
+05 — Featured projects
+Purpose: show proof of technical ability. Feature a small, curated set of the strongest projects (typically three at first), rather than an exhaustive repository dump. Existing examples mentioned in the conversation include CampusCare, Rescue Paw and Aero Vision; retain those names only if these are the projects Jitendra wants to showcase and their details are accurate.
+Card element
+Content rule
+Project name and category
+Clear project title plus a concise domain label.
+One-line problem
+Explain the user need or problem before describing technology.
+Contribution
+State what Jitendra personally designed, built or owned.
+Outcome / status
+Give a truthful result, demo status or current stage; do not imply launch or impact without evidence.
+Technology tags
+Show only the few technologies that matter to understanding the build.
+Actions
+Repository, live demo or case study where each link exists and works.
+Card principle: make cards consistent in structure, not necessarily identical in height by force. Use a clear title, readable description, restrained border/surface, and a visible link affordance. Keep hover movement small; the whole card should not masquerade as a link if it contains multiple separate actions.
+06 — Project journey / build process
+Purpose: show how Jitendra approaches a build, not just its final screenshot. Use a compact sequence attached to one or two featured projects: problem → research / constraints → design decisions → implementation → testing / iteration → outcome and next step. Each stage should have a short concrete note. A timeline or numbered steps can work; on mobile, turn it into a vertical sequence. Avoid a decorative process graphic with no project evidence.
+07 — Technical Vidya experience / involvement
+Purpose: make the role and contribution legible. Use a focused experience entry with organization, role/title, dates if confirmed, context and two to four action-based bullets. Distinguish individual responsibilities from team outcomes. If Technical Vidya involvement is ongoing or informal, describe it accurately rather than implying a formal employment relationship.
+08 — Community / social impact
+Purpose: show the contributor side with equal care to technical work. Include NSS and other verified participation, what the activity addressed, Jitendra’s specific role, collaborators and a concrete outcome where known. Use a small number of photos only when they are authentic, appropriate to share and have descriptive alternative text. Do not inflate impact with unverified counts.
+09 — Skills
+Purpose: make relevant capabilities scannable. Group skills into meaningful categories such as Languages, Frameworks / Tools, AI/ML, and Other areas of exploration. Separate hands-on strengths from currently learning topics when that distinction helps accuracy. Use text labels, optionally with small icons; never use fake percentage bars, arbitrary ratings or “expert” badges without a clear basis.
+10 — Learning journey
+Purpose: communicate growth and curiosity honestly. Present a short chronological or thematic view of what Jitendra is learning, what prompted it and how it is being practiced. Flutter + Dart is explicitly identified as a current learning area in the source conversation. AI/ML, cybersecurity and software development are described as exploration areas. Keep learning items visibly distinct from demonstrated skills.
+11 — Achievements
+Purpose: surface meaningful recognition without turning the site into a trophy wall. Prioritize a few verified hackathons, competitions, awards or community milestones. Each entry should identify the event/achievement, year if confirmed, Jitendra’s role and why it matters. Add links when there is a credible source or event page.
+12 — Certificates
+Purpose: provide supporting evidence for selected learning. Use an organized compact gallery or list, not a giant wall of certificate images. Display title, issuer, completion date if confirmed and credential link / ID when available. Keep the visual weight below projects and experience. Include only relevant, verifiable certificates; a text list is preferable to blurry document scans.
+13 — Education
+Purpose: give academic context succinctly. Include institution, program/degree, department or specialization, dates/status and location only if appropriate and verified. CSE • AI/ML STUDENT is the source-approved hero descriptor; do not invent institution names, grades, dates or coursework. Relevant coursework can be a short optional line, not a long catalog.
+14 — Currently building
+Purpose: give the portfolio a current, living signal. Show one active project or learning effort with a short description, current focus and a next milestone or “what I’m exploring” note. Update it when the work changes. Do not use a fake live activity indicator or imply continual updates when the page is static.
+15 — Contact
+Purpose: make the next step simple. Use a brief invitation, one primary contact route and a small set of professional links such as GitHub or LinkedIn if those profiles are ready to share. Make email a working link if supplied. Do not expose private contact details or add a form that has no clear delivery, validation and privacy behavior.
+16 — Footer
+Purpose: close cleanly and repeat only useful essentials. Include Jitendra’s name, a compact set of key links, social/profile links and a copyright year if desired. Keep the footer visually quieter than the contact section; avoid a second full navigation system or oversized slogan.
+5. Responsive and mobile behavior
+Area
+Desktop
+Tablet / mobile
+Navigation
+Inline links and optional resume action.
+Menu button; clear open/close state; generous touch targets.
+Hero
+Two columns: copy and terminal.
+Single column; copy first, terminal below; no horizontal overflow.
+Identity strip
+Four items in one row.
+Two-by-two grid or vertical list with readable spacing.
+Project cards
+Three-column or two-column grid based on available width.
+One column on narrow screens; preserve card hierarchy and actions.
+Timelines / experience
+Horizontal only when readable.
+Vertical sequence with dates and labels aligned clearly.
+Tables / skill groups
+Several columns where content fits.
+Stack groups; avoid tiny type and sideways scrolling.
+Motion / hover
+Subtle hover plus focus equivalents.
+Do not rely on hover; show actions and state without it.
+Use fluid spacing and typography. Check at narrow widths for long project titles, terminal wrapping, menu overlap, image cropping and touch target size. Keep important content in the document order that makes sense when stacked, and do not hide meaningful detail exclusively on desktop.
+6. Animation and interaction principles
+Hero elements fade or slide in once, with a short distance and duration; avoid repeated movement while scrolling.
+Terminal lines reveal subtly; provide the complete static text to assistive technology and users who disable motion.
+Gradient glow behind the terminal moves very slowly, or remains static if motion adds no value.
+Buttons have a small color, border or position transition on hover and a visible keyboard-focus state.
+Active navigation gets a small gradient underline as the visitor moves through sections.
+Honor reduced-motion preferences; remove nonessential reveal and continuous animations.
+Never make reading, navigation, or information access depend on animation completion.
+7. Component and card principles
+Use consistent content widths, spacing, corner treatment and border language across sections.
+Give each card one clear job and a predictable reading order: label/title, explanation, evidence, action.
+Use surface contrast and subtle borders before shadows or glowing outlines.
+Keep technical tags small and secondary; do not let a tag cloud overpower project outcomes.
+Use icons only when their meaning is clear; pair unfamiliar icons with text labels.
+Make interactive elements visibly interactive, with keyboard focus and pressed/open states where relevant.
+8. Accessibility and readability
+Maintain strong contrast for primary and secondary text on dark surfaces; verify actual color pairs.
+Use semantic heading order and descriptive link text; avoid “click here.”
+Provide keyboard access, visible focus, logical focus order and a skip-to-content link.
+Give meaningful images alternative text; mark decorative textures and glows as decorative.
+Do not communicate status by color alone; include labels or icons with text.
+Respect reduced motion, browser zoom and text enlargement. Avoid fixed-height containers that clip content.
+Use plain language, short paragraphs, clear section labels and sufficient line spacing.
+Ensure the menu, terminal content and card actions remain understandable to screen readers.
+9. What should not be done
+Avoid
+Why / replacement
+Over-animation, constant parallax, cursor trails or typewriter effects that hide text
+They distract and can reduce readability; use a few brief, optional transitions.
+Fake skill percentages, arbitrary proficiency meters or inflated labels
+They imply unsupported precision; use honest categories and project evidence.
+Certificate-heavy design or a wall of scanned images
+It buries stronger evidence; curate credentials in a compact supporting section.
+Gradients on every card, heading and background
+It weakens hierarchy; reserve accent for a small number of focal points.
+A terminal aesthetic on every section
+It becomes a gimmick; keep code styling concentrated in the hero and small metadata.
+Generic “passionate developer” filler or unsupported impact numbers
+It says little and may mislead; replace with specific actions and verifiable outcomes.
+Too many projects or every tool ever touched
+It makes the portfolio hard to scan; prioritize relevant, complete work.
+Tiny muted text, low-contrast gray or long all-caps passages
+It harms legibility; maintain contrast, sensible type size and ordinary sentence case.
+Fake live status, dead links, placeholder buttons or unverified claims
+They reduce trust; only publish working actions and current facts.
+Autoplay audio/video or motion that ignores reduced-motion settings
+It interrupts visitors; make media user-controlled and motion optional.
+10. Implementation-ready content checklist
+Confirm the personal facts: education, dates, roles, links, project status, awards and certificates.
+Select the strongest three initial projects and gather each problem statement, personal contribution, outcome and working link.
+Write the About paragraph and Technical Vidya / community entries using specific, truthful actions.
+Choose exact color tokens and typefaces; test text contrast on the real component surfaces.
+Build the page in the specified order and confirm every navigation item lands on a clear section heading.
+Check desktop, tablet and narrow mobile layouts, including menu, terminal wrapping and card actions.
+Test keyboard navigation, focus visibility, reduced motion, zoom, image alternatives and link destinations.
+Review all sample copy and remove placeholders before publishing; keep the “Currently building” item current.
+11. Final locked checklist
+[ ] Direction remains “Minimal Tech — Professional + Developer.”
+[ ] Clean, recruiter-friendly hierarchy and generous whitespace are preserved.
+[ ] Dark / near-black base, subtle surfaces and controlled blue-to-purple accents are used.
+[ ] Developer personality appears through the hero terminal and selective monospace details.
+[ ] Hero retains “Building. Learning. Exploring.” and the agreed introductory copy.
+[ ] The terminal reflects CSE_AIML_STUDENT, Flutter + Dart learning, AI/ML, Cybersecurity, Software Development and building status.
+[ ] Full site flow includes every planned section from navbar through footer.
+[ ] Projects and contributions lead with concrete work and truthful evidence.
+[ ] Technical Vidya and community impact are visible, accurately described and not treated as decoration.
+[ ] Skills distinguish experience from exploration; no fake percentages are used.
+[ ] Certificates remain curated and secondary to stronger portfolio evidence.
+[ ] Mobile behavior is intentional, readable and touch-friendly.
+[ ] Motion is subtle, optional and compatible with reduced-motion preferences.
+[ ] Accessibility, contrast, keyboard use and readable copy are checked.
+[ ] No dead links, placeholder actions, unsupported claims or decorative clutter remain.

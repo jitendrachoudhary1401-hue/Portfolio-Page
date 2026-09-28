@@ -1,0 +1,190 @@
+/* ==============================================================================
+   ADMIN PORTAL & CERTIFICATE MANAGEMENT STYLES
+   ============================================================================== */
+.admin-modal-container {
+  max-width: 820px;
+}
+
+.admin-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-subtle);
+  background: #0E131C;
+  padding: 0 24px;
+}
+
+.admin-tab {
+  padding: 14px 18px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all var(--transition-fast);
+}
+
+.admin-tab:hover {
+  color: var(--text-primary);
+}
+
+.admin-tab.active {
+  color: var(--accent-blue);
+  border-bottom-color: var(--accent-blue);
+  font-weight: 600;
+}
+
+.admin-cert-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.admin-cert-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: #0E131C;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  gap: 16px;
+}
+
+.admin-cert-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.admin-cert-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.admin-cert-meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  display: flex;
+  gap: 12px;
+}
+
+.admin-cert-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* File Upload Dropzone */
+.file-upload-dropzone {
+  border: 2px dashed var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.015);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.file-upload-dropzone:hover, .file-upload-dropzone.drag-active {
+  border-color: var(--accent-blue);
+  background: rgba(79, 140, 255, 0.04);
+}
+
+.upload-icon {
+  color: var(--accent-blue);
+  width: 32px;
+  height: 32px;
+}
+
+.upload-text {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.upload-subtext {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.upload-progress-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.upload-progress-fill {
+  height: 100%;
+  background: var(--grad-primary);
+  transition: width 0.2s ease;
+}
+
+/* Firebase Diagnostic Panel */
+.diag-panel {
+  background: #0E131C;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.diag-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.status-connected {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+}
+
+.status-missing {
+  background: rgba(245, 158, 11, 0.15);
+  color: #FBBF24;
+}
+
+.code-block {
+  background: #090C12;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: #AAB3C2;
+  overflow-x: auto;
+  white-space: pre;
+}

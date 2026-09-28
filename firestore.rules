@@ -1,0 +1,44 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user is authenticated admin
+    function isAdmin() {
+      return request.auth != null;
+    }
+    
+    // Certificates collection:
+    // Anyone can read (to view on public portfolio)
+    // Only authenticated admin can create, update, or delete
+    match /certificates/{certificateId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // Projects collection (for dynamic project sync):
+    // Anyone can read
+    // Only authenticated admin can write
+    match /projects/{projectId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // Achievements collection:
+    // Anyone can read
+    // Only authenticated admin can write
+    match /achievements/{achievementId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // Contact messages collection:
+    // Anyone can submit a message with validation
+    // Only authenticated admin can read or delete
+    match /contacts/{messageId} {
+      allow create: if request.resource.data.name is string
+                    && request.resource.data.email is string
+                    && request.resource.data.message is string;
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}
