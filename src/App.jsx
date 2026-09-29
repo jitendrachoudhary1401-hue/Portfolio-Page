@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AuthProvider } from './context/AuthContext';
 import { Navbar } from './components/Navbar';
-import { Hero } from './components/Hero';
+import { BentoDashboard } from './components/BentoDashboard';
 import { IdentityStrip } from './components/IdentityStrip';
 import { About } from './components/About';
 import { Skills } from './components/Skills';
@@ -18,6 +18,7 @@ import { AdminModal } from './components/AdminModal';
 
 import './styles/theme.css';
 import './styles/components.css';
+import './styles/bento.css';
 import './styles/admin.css';
 
 export function App() {
@@ -31,12 +32,12 @@ export function App() {
           Skip to main content
         </a>
 
-        {/* 01: Sticky Navigation Bar */}
+        {/* 01: Sticky Navigation Bar on Scroll */}
         <Navbar onOpenAdmin={() => setIsAdminOpen(true)} />
 
         <main id="main-content">
-          {/* 02: Hero Section */}
-          <Hero onOpenAdmin={() => setIsAdminOpen(true)} />
+          {/* 02: Master Bento Showcase (Pixel-Perfect to Reference Design) */}
+          <BentoDashboard onOpenAdmin={() => setIsAdminOpen(true)} />
 
           {/* 03: Quick Identity Strip */}
           <IdentityStrip />

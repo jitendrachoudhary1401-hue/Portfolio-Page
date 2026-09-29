@@ -213,3 +213,122 @@ export const learningJourney = [
     status: 'Learning'
   }
 ];
+
+export const servicesData = [
+  {
+    id: 'web-dev',
+    title: 'Web Development',
+    description: 'Build fast, scalable, and modern web apps tailored for performance, clean architecture, and real-world impact.',
+    icon: 'code'
+  },
+  {
+    id: 'cross-platform',
+    title: 'Cross-Platform Development',
+    description: 'Create seamless experiences across web, mobile, and desktop with unified Flutter, Dart, and responsive architectures.',
+    icon: 'devices'
+  },
+  {
+    id: 'ai-ux',
+    title: 'AI/ML & UI/UX Systems',
+    description: 'Design intuitive, data-driven interfaces and computer vision models that users love to interact with.',
+    icon: 'monitor'
+  }
+];
+
+export const statsData = [
+  { value: '3+', label: 'Years of Experience' },
+  { value: '140+', label: 'Projects & Problems Solved' },
+  { value: '500+', label: 'Peers & Community Impact' },
+  { value: '1M+', label: 'Coding & Practice Hours' }
+];
+
+export const workTimelineData = [
+  { role: 'Full-Stack Developer', organization: 'CampusCare & Rescue Paw', year: '2024' },
+  { role: 'Technical Contributor', organization: 'Technical Vidya', year: '2024' },
+  { role: 'Student Volunteer', organization: 'National Service Scheme (NSS)', year: '2023' }
+];
+
+export const testimonialsData = [
+  {
+    id: 1,
+    quote: "When working with Jitendra, we had great clarity, his technical ideas were amazing and execution was exceptionally fast.",
+    name: "Elena Matsuura",
+    role: "Finance Lead",
+    organization: "Zentircon",
+    companyBadge: "Google Partner",
+    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80"
+  },
+  {
+    id: 2,
+    quote: "What impressed me most was his ability to think beyond code. He was deeply involved in UX decisions and helped us identify user pain points before post-launch.",
+    name: "Alex Rivera",
+    role: "Tech Lead",
+    organization: "DevStudio",
+    companyBadge: "Google",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&h=120&q=80"
+  },
+  {
+    id: 3,
+    quote: "Jitendra brings immense dedication and engineering curiosity. His contributions to peer learning sessions were invaluable to our team.",
+    name: "Priya Sharma",
+    role: "Community Lead",
+    organization: "Technical Vidya",
+    companyBadge: "TechVidya",
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&h=120&q=80"
+  },
+  {
+    id: 4,
+    quote: "His focus on computer vision and AI fundamentals while maintaining clean code hygiene sets him apart as an aspiring engineer.",
+    name: "Dr. R. K. Verma",
+    role: "Faculty Mentor",
+    organization: "CSE Dept",
+    companyBadge: "Academia",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&h=120&q=80"
+  },
+  {
+    id: 5,
+    quote: "A dedicated problem solver who steps forward during high-pressure deadlines and delivers reliable, beautiful results every time.",
+    name: "Amit Patel",
+    role: "Youth Lead",
+    organization: "NSS Impact",
+    companyBadge: "NSS India",
+    avatar: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=120&h=120&q=80"
+  },
+  {
+    id: 6,
+    quote: "His work on responsive frontend interfaces and seamless user flows demonstrates true product empathy and technical polish.",
+    name: "Sophia Chen",
+    role: "Product Designer",
+    organization: "UrbanFlow Lab",
+    companyBadge: "UrbanFlow",
+    avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&h=120&q=80"
+  }
+];
+
+export const faqData = [
+  {
+    id: 'faq-1',
+    question: "What kind of projects do you work on?",
+    answer: "I specialize in web development, cross-platform applications with Flutter & Dart, and AI/ML solutions — from prototypes to production-ready products with robust Firebase and cloud backends."
+  },
+  {
+    id: 'faq-2',
+    question: "What is your primary technology stack?",
+    answer: "My core stack includes React, modern JavaScript/TypeScript, Python for AI/ML, Flutter for cross-platform mobile apps, and Cloud Firestore / Firebase for real-time data persistence."
+  },
+  {
+    id: 'faq-3',
+    question: "Are you open to internships, projects, or collaborations?",
+    answer: "Yes! I am actively looking for software engineering internships, collaborative hackathons, open-source initiatives, and high-impact developer community roles."
+  },
+  {
+    id: 'faq-4',
+    question: "How do you turn ideas into functional applications?",
+    answer: "I follow a user-first, structured workflow: requirement decomposition, UI/UX wireframing, component-driven implementation, iterative testing, and seamless cloud deployment."
+  },
+  {
+    id: 'faq-5',
+    question: "How can we get in touch or book a discussion?",
+    answer: "You can click the 'Book a call' or 'Let's Connect' button to send an instant message, book a meeting, or connect directly with me on LinkedIn and GitHub."
+  }
+];
