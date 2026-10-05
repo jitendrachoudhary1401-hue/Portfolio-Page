@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AuthProvider } from './context/AuthContext';
+import { PortfolioProvider } from './context/PortfolioContext';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { TechStrip } from './components/TechStrip';
@@ -28,7 +29,8 @@ export function App() {
 
   return (
     <AuthProvider>
-      <div className="portfolio-app">
+      <PortfolioProvider>
+        <div className="portfolio-app">
         {/* Accessibility Skip Link */}
         <a href="#hero" className="skip-to-content">
           Skip to main content
@@ -98,7 +100,8 @@ export function App() {
           isOpen={isAdminOpen}
           onClose={() => setIsAdminOpen(false)}
         />
-      </div>
+        </div>
+      </PortfolioProvider>
     </AuthProvider>
   );
 }

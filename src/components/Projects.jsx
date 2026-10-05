@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { ExternalLink, ArrowUpRight, Code2, Sparkles, Terminal, Layers } from 'lucide-react';
 import { GithubIcon } from './Icons';
-import { initialProjects } from '../data/initialData';
+import { usePortfolio } from '../context/PortfolioContext';
 import { ProjectModal } from './ProjectModal';
 
 export const Projects = () => {
+  const { projects } = usePortfolio();
   const [selectedProject, setSelectedProject] = useState(null);
 
   // Distinct visual accent presets for each project mockup
@@ -44,7 +45,7 @@ export const Projects = () => {
 
         {/* 2x2 Project Cards Grid */}
         <div className="modern-projects-grid">
-          {initialProjects.map((project) => {
+          {projects.map((project) => {
             const visual = projectMockupVisuals[project.id] || {
               tagline: 'Production System Architecture',
               accentColor: '#2563EB',

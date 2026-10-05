@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Shield, Lock, ExternalLink, Terminal } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { usePortfolio } from '../context/PortfolioContext';
 
 export const Navbar = ({ onOpenAdmin, onBookCall }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
   const { currentUser } = useAuth();
+  const { personalInfo } = usePortfolio();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,8 +53,8 @@ export const Navbar = ({ onOpenAdmin, onBookCall }) => {
   return (
     <header className={`navbar modern-navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="container navbar-inner">
-        <a href="#hero" className="brand-logo" aria-label="Jitendra Choudhary Home">
-          <span className="brand-name-main">JITENDRA CHOUDHARY</span>
+        <a href="#hero" className="brand-logo" aria-label="Home">
+          <span className="brand-name-main">{personalInfo?.name?.toUpperCase() || 'JITENDRA CHOUDHARY'}</span>
         </a>
 
         {/* Desktop Navigation Links */}

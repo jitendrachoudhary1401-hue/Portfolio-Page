@@ -1,10 +1,11 @@
 import React from 'react';
 import { Shield, Lock, Mail, ArrowUp } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from './Icons';
-import { personalInfo } from '../data/initialData';
+import { usePortfolio } from '../context/PortfolioContext';
 import { useAuth } from '../context/AuthContext';
 
 export const Footer = ({ onOpenAdmin, onBookCall }) => {
+  const { personalInfo } = usePortfolio();
   const { currentUser } = useAuth();
   const currentYear = new Date().getFullYear();
 
@@ -20,7 +21,7 @@ export const Footer = ({ onOpenAdmin, onBookCall }) => {
       <div className="container footer-content-container">
         {/* Giant Watermark Typography matching the screenshot */}
         <div className="footer-giant-watermark" aria-hidden="true">
-          JITENDRA CHOUDHARY
+          {personalInfo?.name?.toUpperCase() || 'JITENDRA CHOUDHARY'}
         </div>
 
         {/* Navigation Links */}

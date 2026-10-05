@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Mail, MapPin, ArrowRight, ExternalLink } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from './Icons';
-import { personalInfo, workTimelineData } from '../data/initialData';
+import { workTimelineData } from '../data/initialData';
+import { usePortfolio } from '../context/PortfolioContext';
 import { subscribeToProfilePhoto } from '../services/profileService';
 
 export const About = ({ onOpenAdmin, onBookCall }) => {
+  const { personalInfo } = usePortfolio();
   const [photoUrl, setPhotoUrl] = useState('');
   const [imgError, setImgError] = useState(false);
 

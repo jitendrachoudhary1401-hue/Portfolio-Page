@@ -1,7 +1,8 @@
 import React from 'react';
-import { servicesData, statsData } from '../data/initialData';
+import { usePortfolio } from '../context/PortfolioContext';
 
 export const Services = () => {
+  const { services: servicesData, stats: statsData } = usePortfolio();
   // SVG Wireframe illustrations matching the exact wireframe aesthetic of the screenshot
   const renderWireframeIcon = (type) => {
     switch (type) {

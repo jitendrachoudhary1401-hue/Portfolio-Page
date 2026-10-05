@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Plus, Minus } from 'lucide-react';
-import { faqData } from '../data/initialData';
+import { usePortfolio } from '../context/PortfolioContext';
 
 export const FAQ = () => {
+  const { faqs: faqData } = usePortfolio();
   const [openId, setOpenId] = useState('faq-1');
 
   const toggleFaq = (id) => {

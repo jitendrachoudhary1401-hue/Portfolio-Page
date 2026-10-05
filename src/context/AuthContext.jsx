@@ -6,6 +6,8 @@ import {
 } from 'firebase/auth';
 import { auth, isFirebaseConfigured } from '../services/firebase';
 
+export const ADMIN_EMAIL = 'jitendrachoudhary1401@gmail.com';
+
 const AuthContext = createContext();
 
 export const useAuth = () => {
@@ -27,8 +29,21 @@ export const AuthProvider = ({ children }) => {
       return;
     }
 
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        if (user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+          setCurrentUser(user);
+          setAuthError(null);
+        } else {
+          // If any unauthorized user logs in, forcefully sign them out
+          console.warn('Unauthorized user detected, signing out:', user.email);
+          await signOut(auth);
+          setCurrentUser(null);
+          setAuthError(`Access restricted. Only the designated portfolio administrator (${ADMIN_EMAIL}) is permitted.`);
+        }
+      } else {
+        setCurrentUser(null);
+      }
       setLoading(false);
     }, (error) => {
       console.error('Auth state error:', error);
@@ -43,10 +58,24 @@ export const AuthProvider = ({ children }) => {
     if (!isFirebaseConfigured || !auth) {
       throw new Error('Firebase Authentication is not configured yet. Please configure your .env file with Firebase credentials.');
     }
+    
+    // Strict pre-check on email
+    if (email.trim().toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+      const err = new Error(`Access Denied: Only the portfolio owner (${ADMIN_EMAIL}) is authorized to sign in to the Admin Panel.`);
+      setAuthError(err.message);
+      throw err;
+    }
+
     setAuthError(null);
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      return userCredential.user;
+      const userCredential = await signInWithEmailAndPassword(auth, email.trim(), password);
+      const user = userCredential.user;
+      if (user.email && user.email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+        await signOut(auth);
+        throw new Error(`Unauthorized: ${user.email} is not authorized to edit this portfolio.`);
+      }
+      setCurrentUser(user);
+      return user;
     } catch (error) {
       setAuthError(error.message);
       throw error;
@@ -64,8 +93,16 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const isSoleAdmin = Boolean(
+    currentUser && 
+    currentUser.email && 
+    currentUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()
+  );
+
   const value = {
     currentUser,
+    isAdmin: isSoleAdmin,
+    adminEmail: ADMIN_EMAIL,
     loading,
     authError,
     login,
@@ -79,3 +116,4 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+

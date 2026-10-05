@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, Sparkles, Terminal, Code2 } from 'lucide-react';
-import { personalInfo } from '../data/initialData';
+import { usePortfolio } from '../context/PortfolioContext';
 import { subscribeToProfilePhoto } from '../services/profileService';
 
 export const Hero = ({ onOpenAdmin, onBookCall }) => {
+  const { personalInfo, stats } = usePortfolio();
   const [photoUrl, setPhotoUrl] = useState('');
   const [imgError, setImgError] = useState(false);
 
@@ -20,6 +21,13 @@ export const Hero = ({ onOpenAdmin, onBookCall }) => {
   const defaultPhoto = '/portrait.jpg';
   const displayPhoto = (!imgError && photoUrl) ? photoUrl : defaultPhoto;
 
+  const firstName = personalInfo?.name ? personalInfo.name.split(' ')[0] : 'Jitendra';
+
+  // Stats fallback
+  const stat1 = stats?.[0] || { value: '100%', label: 'Code Integrity' };
+  const stat2 = stats?.[1] || { value: '140+', label: 'Problems & Commits' };
+  const stat3 = stats?.[2] || { value: '3+', label: 'Years Tech Journey' };
+
   return (
     <section id="hero" className="modern-hero-section">
       {/* Background ambient lighting */}
@@ -29,13 +37,13 @@ export const Hero = ({ onOpenAdmin, onBookCall }) => {
         {/* Left Column: Heading, Subtitle & Action Buttons */}
         <div className="hero-left-content">
           <p className="hero-eyebrow">
-            Hi, I'm <span className="hero-highlight-name">Jitendra</span>, I build
+            Hi, I'm <span className="hero-highlight-name">{firstName}</span>, I build
           </p>
           <h1 className="hero-main-title">
-            Digital Experiences.
+            {personalInfo?.tagline || 'Digital Experiences.'}
           </h1>
           <p className="hero-subtitle">
-            A passionate Computer Science &amp; Engineering (AI/ML) student focused on crafting clean, user-friendly software experiences, robust cross-platform applications, and intelligent systems.
+            {personalInfo?.heroIntro || 'A passionate Computer Science & Engineering (AI/ML) student focused on crafting clean, user-friendly software experiences, robust cross-platform applications, and intelligent systems.'}
           </p>
 
           <div className="hero-actions-group">
@@ -61,22 +69,22 @@ export const Hero = ({ onOpenAdmin, onBookCall }) => {
             {/* Ambient Deep Blue Sphere */}
             <div className="hero-ambient-orb" aria-hidden="true" />
 
-            {/* Floating Stat Pill 1: Top-Right (100% Quality & Code Integrity) */}
+            {/* Floating Stat Pill 1 */}
             <div className="floating-stat-pill pill-tr">
-              <span className="floating-stat-val">100%</span>
-              <span className="floating-stat-sub">Code Integrity</span>
+              <span className="floating-stat-val">{stat1.value}</span>
+              <span className="floating-stat-sub">{stat1.label}</span>
             </div>
 
-            {/* Floating Stat Pill 2: Middle-Left (140+ Problems & Commits) */}
+            {/* Floating Stat Pill 2 */}
             <div className="floating-stat-pill pill-ml">
-              <span className="floating-stat-val">140+</span>
-              <span className="floating-stat-sub">Problems &amp; Commits</span>
+              <span className="floating-stat-val">{stat2.value}</span>
+              <span className="floating-stat-sub">{stat2.label}</span>
             </div>
 
-            {/* Floating Stat Pill 3: Bottom-Left (3+ Years Tech Exploration) */}
+            {/* Floating Stat Pill 3 */}
             <div className="floating-stat-pill pill-bl">
-              <span className="floating-stat-val">3+</span>
-              <span className="floating-stat-sub">Years Tech Journey</span>
+              <span className="floating-stat-val">{stat3.value}</span>
+              <span className="floating-stat-sub">{stat3.label}</span>
             </div>
 
             {/* Central Portrait Image Box */}
@@ -90,16 +98,16 @@ export const Hero = ({ onOpenAdmin, onBookCall }) => {
             >
               <img
                 src={displayPhoto}
-                alt="Jitendra Choudhary"
+                alt={personalInfo?.name || "Jitendra Choudhary"}
                 className="hero-avatar-image"
                 onError={() => setImgError(true)}
               />
             </div>
 
-            {/* Floating Badge: Bottom-Right (Jitendra / CSE & AI/ML Developer) */}
+            {/* Floating Badge: Bottom-Right */}
             <div className="floating-stat-pill pill-br">
-              <span className="floating-stat-val">JITENDRA</span>
-              <span className="floating-stat-sub">CSE • AI/ML DEV</span>
+              <span className="floating-stat-val">{firstName.toUpperCase()}</span>
+              <span className="floating-stat-sub">{personalInfo?.role || 'CSE • AI/ML DEV'}</span>
             </div>
           </div>
         </div>

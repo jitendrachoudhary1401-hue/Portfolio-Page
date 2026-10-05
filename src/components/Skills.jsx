@@ -9,9 +9,10 @@ import {
   CheckCircle2,
   Clock
 } from 'lucide-react';
-import { skillsData } from '../data/initialData';
+import { usePortfolio } from '../context/PortfolioContext';
 
 export const Skills = () => {
+  const { skills: skillsData } = usePortfolio();
   const getCategoryIcon = (category) => {
     switch (category) {
       case 'Programming Languages':
