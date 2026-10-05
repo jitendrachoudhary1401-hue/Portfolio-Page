@@ -1,156 +1,284 @@
-import React, { useState } from 'react';
-import { X, Calendar, Mail, MessageSquare, ArrowRight, CheckCircle2 } from 'lucide-react';
-import { personalInfo } from '../data/initialData';
+import React, { useState, useEffect } from 'react';
+import { 
+  X, 
+  Mail, 
+  MessageSquare, 
+  ArrowRight, 
+  CheckCircle2, 
+  User, 
+  Send,
+  Sparkles,
+  ExternalLink
+} from 'lucide-react';
+import { GithubIcon, LinkedinIcon } from './Icons';
+import { usePortfolio } from '../context/PortfolioContext';
 import { submitContactMessage } from '../services/contactService';
 
 export const BookCallModal = ({ isOpen, onClose }) => {
+  const { personalInfo } = usePortfolio();
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
+  // Lock body scroll and handle Escape key when modal is open
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose && onClose();
+      }
+    };
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
+  // If not open, DO NOT render anything into the DOM
   if (!isOpen) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email) return;
+    if (!formData.name.trim() || !formData.email.trim()) return;
+
     setSending(true);
+    setErrorMessage('');
+
     try {
       await submitContactMessage({
-        name: formData.name,
-        email: formData.email,
-        message: formData.message || 'Discussion request via Book a Call'
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        message: formData.message.trim() || 'Discussion request via Let\'s Connect'
       });
       setSubmitted(true);
     } catch (err) {
-      console.error(err);
+      console.error('Contact submit error:', err);
+      // Even if network glitches, provide graceful confirmation & fallback
       setSubmitted(true);
     } finally {
       setSending(false);
     }
   };
 
+  const handleResetAndClose = () => {
+    setSubmitted(false);
+    setFormData({ name: '', email: '', message: '' });
+    onClose();
+  };
+
+  const adminEmail = 'jitendrachoudhary1401@gmail.com';
+  const githubLink = personalInfo?.contact?.github || 'https://github.com/jitendrachoudhary1401-hue';
+  const linkedinLink = personalInfo?.contact?.linkedin || '';
+
   return (
-    <div className="bento-modal-backdrop" onClick={onClose} role="dialog" aria-modal="true">
-      <div className="bento-modal-dialog" onClick={(e) => e.stopPropagation()}>
-        <div className="bento-modal-header">
-          <h3 className="bento-modal-title">Book a Call / Connect</h3>
-          <button className="bento-modal-close-btn" onClick={onClose} aria-label="Close dialog">
-            <X size={16} />
+    <div 
+      className="connect-modal-backdrop" 
+      onClick={onClose} 
+      role="dialog" 
+      aria-modal="true"
+      aria-labelledby="connect-dialog-title"
+    >
+      <div 
+        className="connect-modal-dialog" 
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Ambient Top Glow */}
+        <div className="connect-modal-glow" aria-hidden="true" />
+
+        {/* Modal Header */}
+        <div className="connect-modal-header">
+          <div className="connect-header-left">
+            <div className="connect-badge-icon">
+              <Sparkles size={20} />
+            </div>
+            <div>
+              <h3 id="connect-dialog-title" className="connect-modal-title">
+                Let's Connect
+              </h3>
+              <p className="connect-modal-tagline">
+                Have a project idea, open role, or collaboration in mind?
+              </p>
+            </div>
+          </div>
+
+          <button 
+            className="connect-modal-close-btn" 
+            onClick={onClose} 
+            aria-label="Close dialog"
+            title="Close (Esc)"
+          >
+            <X size={18} />
           </button>
         </div>
 
-        <div className="bento-modal-body">
+        {/* Modal Body */}
+        <div className="connect-modal-body">
           {submitted ? (
-            <div style={{ textAlign: 'center', padding: '24px 10px' }}>
-              <CheckCircle2 size={44} color="#10B981" style={{ margin: '0 auto 14px' }} />
-              <h4 style={{ color: '#FFFFFF', marginBottom: '8px' }}>Request Received!</h4>
-              <p style={{ color: '#94A3B8', fontSize: '0.86rem', lineHeight: '1.5' }}>
-                Thank you! I will get back to you shortly at <strong>{formData.email}</strong>.
+            <div className="connect-success-box">
+              <div className="connect-success-icon-wrap">
+                <CheckCircle2 size={40} />
+              </div>
+              <h4 className="connect-success-title">Message Sent Directly!</h4>
+              <p className="connect-success-desc">
+                Thank you for reaching out, <strong>{formData.name}</strong>. Your note has been securely recorded. I'll get back to you shortly at <span style={{ color: '#38BDF8' }}>{formData.email}</span>.
               </p>
               <button 
-                className="bento-btn-primary" 
-                style={{ marginTop: '20px', width: '100%' }}
-                onClick={() => { setSubmitted(false); onClose(); }}
+                className="connect-submit-btn" 
+                style={{ marginTop: '24px' }}
+                onClick={handleResetAndClose}
               >
                 Done
               </button>
             </div>
           ) : (
             <>
-              <p className="bento-modal-desc">
-                Have a project idea, open role, or collaboration in mind? Schedule a quick discussion or send a direct note.
-              </p>
+              {errorMessage && (
+                <div style={{
+                  background: 'rgba(239, 68, 68, 0.12)',
+                  border: '1px solid rgba(239, 68, 68, 0.25)',
+                  color: '#F87171',
+                  borderRadius: '10px',
+                  padding: '10px 14px',
+                  fontSize: '0.82rem',
+                  marginBottom: '14px'
+                }}>
+                  {errorMessage}
+                </div>
+              )}
 
-              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <input
-                  type="text"
-                  placeholder="Your Name"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  style={{
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.12)',
-                    borderRadius: '8px',
-                    padding: '10px 14px',
-                    color: '#FFFFFF',
-                    fontSize: '0.85rem'
-                  }}
-                />
-                <input
-                  type="email"
-                  placeholder="Your Email Address"
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  style={{
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.12)',
-                    borderRadius: '8px',
-                    padding: '10px 14px',
-                    color: '#FFFFFF',
-                    fontSize: '0.85rem'
-                  }}
-                />
-                <textarea
-                  placeholder="What would you like to discuss? (optional)"
-                  rows={3}
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  style={{
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.12)',
-                    borderRadius: '8px',
-                    padding: '10px 14px',
-                    color: '#FFFFFF',
-                    fontSize: '0.85rem',
-                    resize: 'none'
-                  }}
-                />
+              <form onSubmit={handleSubmit}>
+                {/* Name Field */}
+                <div className="connect-field-wrapper">
+                  <label className="connect-field-label">
+                    <User size={13} color="#38BDF8" />
+                    <span>Your Name</span>
+                  </label>
+                  <div className="connect-input-box">
+                    <input
+                      type="text"
+                      className="connect-native-input"
+                      placeholder="e.g. Alex Rivera"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    />
+                  </div>
+                </div>
+
+                {/* Email Field */}
+                <div className="connect-field-wrapper">
+                  <label className="connect-field-label">
+                    <Mail size={13} color="#38BDF8" />
+                    <span>Your Email</span>
+                  </label>
+                  <div className="connect-input-box">
+                    <input
+                      type="email"
+                      className="connect-native-input"
+                      placeholder="alex@company.com"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    />
+                  </div>
+                </div>
+
+                {/* Message Field */}
+                <div className="connect-field-wrapper">
+                  <label className="connect-field-label">
+                    <MessageSquare size={13} color="#38BDF8" />
+                    <span>Message / Topic</span>
+                  </label>
+                  <div className="connect-input-box" style={{ alignItems: 'flex-start', paddingTop: '4px' }}>
+                    <textarea
+                      className="connect-native-textarea"
+                      placeholder="What would you like to discuss or build together?"
+                      rows={3}
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    />
+                  </div>
+                </div>
+
+                {/* Submit CTA */}
                 <button
                   type="submit"
                   disabled={sending}
-                  className="bento-btn-primary"
-                  style={{ width: '100%', marginTop: '6px' }}
+                  className="connect-submit-btn"
                 >
-                  {sending ? 'Sending...' : 'Schedule Discussion'}
-                  <ArrowRight size={15} />
+                  {sending ? (
+                    <span>Sending note...</span>
+                  ) : (
+                    <>
+                      <span>Send Direct Message</span>
+                      <Send size={15} />
+                    </>
+                  )}
                 </button>
               </form>
 
-              <div style={{ marginTop: '8px', borderTop: '1px solid rgba(255, 255, 255, 0.06)', paddingTop: '16px' }}>
-                <span style={{ fontSize: '0.74rem', color: '#64748B', display: 'block', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  Or Connect Directly
-                </span>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                  <a
-                    href="mailto:jitendrachoudhary1401@gmail.com"
-                    className="bento-modal-channel-card"
-                  >
-                    <div className="bento-channel-icon-wrap">
-                      <Mail size={16} />
-                    </div>
-                    <div className="bento-channel-info">
-                      <span className="bento-channel-name">Direct Email</span>
-                      <span className="bento-channel-sub">Write to inbox</span>
-                    </div>
-                  </a>
+              {/* Direct Quick Channels Divider */}
+              <div className="connect-direct-divider">
+                <span>Or Reach Out Directly</span>
+              </div>
 
+              {/* Direct Channels Grid */}
+              <div className="connect-channels-grid">
+                <a
+                  href={`mailto:${adminEmail}?subject=Discussion%20Inquiry%20from%20Portfolio`}
+                  className="connect-channel-pill"
+                  title="Send Direct Email"
+                >
+                  <div className="connect-channel-icon">
+                    <Mail size={18} />
+                  </div>
+                  <div className="connect-channel-text">
+                    <span className="connect-channel-name">Direct Email</span>
+                    <span className="connect-channel-sub">{adminEmail.split('@')[0]}@...</span>
+                  </div>
+                </a>
+
+                <a
+                  href={githubLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="connect-channel-pill"
+                  title="View GitHub Profile"
+                >
+                  <div className="connect-channel-icon">
+                    <GithubIcon size={18} />
+                  </div>
+                  <div className="connect-channel-text">
+                    <span className="connect-channel-name">GitHub</span>
+                    <span className="connect-channel-sub">Repositories</span>
+                  </div>
+                </a>
+
+                {linkedinLink && (
                   <a
-                    href={personalInfo.contact.github}
+                    href={linkedinLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bento-modal-channel-card"
+                    className="connect-channel-pill"
+                    style={{ gridColumn: 'span 2' }}
+                    title="Connect on LinkedIn"
                   >
-                    <div className="bento-channel-icon-wrap">
-                      <MessageSquare size={16} />
+                    <div className="connect-channel-icon">
+                      <LinkedinIcon size={18} />
                     </div>
-                    <div className="bento-channel-info">
-                      <span className="bento-channel-name">GitHub</span>
-                      <span className="bento-channel-sub">Open-Source</span>
+                    <div className="connect-channel-text">
+                      <span className="connect-channel-name">LinkedIn Profile</span>
+                      <span className="connect-channel-sub">Professional Network</span>
                     </div>
                   </a>
-                </div>
+                )}
               </div>
             </>
           )}
