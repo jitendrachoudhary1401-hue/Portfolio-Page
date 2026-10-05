@@ -1,9 +1,10 @@
 import React from 'react';
-import { Terminal, Shield, Lock, ArrowUp } from 'lucide-react';
+import { Shield, Lock, Mail, ArrowUp } from 'lucide-react';
+import { GithubIcon, LinkedinIcon } from './Icons';
 import { personalInfo } from '../data/initialData';
 import { useAuth } from '../context/AuthContext';
 
-export const Footer = ({ onOpenAdmin }) => {
+export const Footer = ({ onOpenAdmin, onBookCall }) => {
   const { currentUser } = useAuth();
   const currentYear = new Date().getFullYear();
 
@@ -12,55 +13,84 @@ export const Footer = ({ onOpenAdmin }) => {
   };
 
   return (
-    <footer className="footer">
-      <div className="container footer-inner">
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-            <Terminal size={16} color="#4F8CFF" />
-            <strong style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
-              {personalInfo.name}
-            </strong>
-            <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>
-              • {personalInfo.role}
-            </span>
-          </div>
-          <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)' }}>
-            {personalInfo.tagline} • Built with React, Vite & Firebase.
-          </p>
+    <footer className="modern-footer-section">
+      {/* Ambient Blue Halo behind Watermark */}
+      <div className="footer-ambient-glow" aria-hidden="true" />
+
+      <div className="container footer-content-container">
+        {/* Giant Watermark Typography matching the screenshot */}
+        <div className="footer-giant-watermark" aria-hidden="true">
+          JITENDRA CHOUDHARY
         </div>
 
-        <ul className="footer-nav">
-          <li><a href="#about">About</a></li>
-          <li><a href="#skills">Skills</a></li>
+        {/* Navigation Links */}
+        <ul className="footer-nav-links">
           <li><a href="#projects">Projects</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#process">Process</a></li>
+          <li><a href="#about">About</a></li>
           <li><a href="#certificates">Certificates</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="#faq">FAQ</a></li>
         </ul>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+        {/* Social Icons Row */}
+        <div className="footer-social-row">
+          {personalInfo.contact.github && (
+            <a
+              href={personalInfo.contact.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-social-circle"
+              aria-label="GitHub Profile"
+            >
+              <GithubIcon size={18} />
+            </a>
+          )}
+          {personalInfo.contact.linkedin && (
+            <a
+              href={personalInfo.contact.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-social-circle"
+              aria-label="LinkedIn Profile"
+            >
+              <LinkedinIcon size={18} />
+            </a>
+          )}
           <button
-            onClick={onOpenAdmin}
-            className="admin-nav-btn"
-            style={{ fontSize: '0.78rem', padding: '5px 10px' }}
+            onClick={onBookCall}
+            className="footer-social-circle"
+            aria-label="Contact / Book a Call"
           >
-            {currentUser ? <Shield size={13} color="#10B981" /> : <Lock size={13} />}
-            <span>{currentUser ? 'Admin Panel' : 'Admin Login'}</span>
-          </button>
-
-          <button
-            onClick={scrollToTop}
-            className="btn btn-secondary btn-sm"
-            aria-label="Scroll to top"
-            style={{ padding: '6px 10px' }}
-          >
-            <ArrowUp size={14} />
+            <Mail size={18} />
           </button>
         </div>
-      </div>
 
-      <div className="container" style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.04)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.78rem', color: 'var(--text-muted)', flexWrap: 'wrap', gap: '8px' }}>
-        <span>&copy; {currentYear} {personalInfo.name}. All verified portfolio information preserved.</span>
-        <span>Minimal Tech — Professional + Developer</span>
+        {/* Bottom Legal & Admin Row */}
+        <div className="footer-bottom-bar">
+          <span className="footer-copyright">
+            &copy; {currentYear} {personalInfo.name}. All rights reserved.
+          </span>
+
+          <div className="footer-bottom-actions">
+            <button
+              onClick={onOpenAdmin}
+              className="footer-admin-link"
+              title="Admin Portal"
+            >
+              {currentUser ? <Shield size={12} color="#10B981" /> : <Lock size={12} />}
+              <span>{currentUser ? 'Admin (Active)' : 'Admin'}</span>
+            </button>
+
+            <button
+              onClick={scrollToTop}
+              className="footer-scroll-top-btn"
+              aria-label="Scroll to top of page"
+            >
+              <ArrowUp size={14} />
+            </button>
+          </div>
+        </div>
       </div>
     </footer>
   );

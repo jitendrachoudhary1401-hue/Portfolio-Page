@@ -1,121 +1,155 @@
 import React, { useState, useEffect } from 'react';
-import { Code, Cpu, Users, MapPin, Sparkles, User, ShieldCheck } from 'lucide-react';
-import { personalInfo } from '../data/initialData';
+import { Mail, MapPin, ArrowRight, ExternalLink } from 'lucide-react';
+import { GithubIcon, LinkedinIcon } from './Icons';
+import { personalInfo, workTimelineData } from '../data/initialData';
 import { subscribeToProfilePhoto } from '../services/profileService';
 
-export const About = ({ onOpenAdmin }) => {
+export const About = ({ onOpenAdmin, onBookCall }) => {
   const [photoUrl, setPhotoUrl] = useState('');
   const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
     const unsub = subscribeToProfilePhoto((url) => {
-      setPhotoUrl(url);
-      setImgError(false);
+      if (url) {
+        setPhotoUrl(url);
+        setImgError(false);
+      }
     });
     return () => unsub && unsub();
   }, []);
 
-  const iconMap = [
-    <Code size={20} className="text-accent-blue" key="code" />,
-    <Cpu size={20} className="text-accent-purple" key="cpu" />,
-    <Users size={20} className="text-accent-cyan" key="users" />
+  const defaultPhoto = '/portrait.jpg';
+  const displayPhoto = (!imgError && photoUrl) ? photoUrl : defaultPhoto;
+
+  const stackIcons = [
+    { name: 'Python', icon: '🐍' },
+    { name: 'React', icon: '⚛️' },
+    { name: 'Flutter', icon: '💙' },
+    { name: 'Dart', icon: '🎯' },
+    { name: 'Firebase', icon: '🔥' },
+    { name: 'JavaScript', icon: '⚡' },
+    { name: 'C++', icon: '⚙️' },
+    { name: 'Git', icon: '🐙' }
   ];
 
   return (
-    <section id="about" className="section-wrapper">
+    <section id="about" className="modern-section-wrapper">
       <div className="container">
-        <div className="section-header">
-          <span className="section-tag">01 // Profile</span>
-          <h2 className="section-title">About Me</h2>
-          <p className="section-desc">
-            Computer science student and software builder focused on engineering useful systems and contributing to technical communities.
+        {/* Centered Section Header */}
+        <div className="section-centered-header">
+          <h2 className="section-centered-title">About Me</h2>
+          <p className="section-centered-subtitle">
+            A glimpse into my background, technical passions, and continuous learning journey.
           </p>
         </div>
 
-        <div className="about-grid-3col">
-          {/* Column 1: Dedicated Profile Portrait Card */}
+        {/* 2-Column Bento Layout */}
+        <div className="about-bento-grid">
+          {/* Left Column: Profile Card */}
           <div className="about-profile-card">
-            <div className="profile-photo-container">
-              <span className="profile-corner corner-tl" />
-              <span className="profile-corner corner-tr" />
-              <span className="profile-corner corner-bl" />
-              <span className="profile-corner corner-br" />
+            <div
+              className="about-profile-img-box"
+              onClick={onOpenAdmin}
+              title="Click to manage profile photo in Admin"
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter') onOpenAdmin && onOpenAdmin(); }}
+            >
+              <img
+                src={displayPhoto}
+                alt="Jitendra Choudhary"
+                className="about-profile-img"
+                onError={() => setImgError(true)}
+              />
+            </div>
 
-              <div className="profile-photo-inner">
-                {photoUrl && !imgError ? (
-                  <img
-                    src={photoUrl}
-                    alt="Jitendra Choudhary Profile Portrait"
-                    className="profile-photo-img"
-                    onError={() => setImgError(true)}
-                  />
-                ) : (
-                  <div className="profile-fallback-box">
-                    <div className="profile-initials-badge">JC</div>
-                    <span style={{ fontSize: '0.8rem', fontFamily: 'var(--font-mono)' }}>
-                      Photo Space Ready
-                    </span>
-                    <button
-                      onClick={onOpenAdmin}
-                      className="btn btn-secondary btn-sm"
-                      style={{ fontSize: '0.72rem', padding: '4px 10px' }}
-                    >
-                      Upload Photo
-                    </button>
-                  </div>
+            <div className="about-profile-info">
+              <h3 className="about-profile-name">JITENDRA CHOUDHARY</h3>
+              <p className="about-profile-role">CSE • AI/ML DEVELOPER</p>
+
+              {/* Social / Contact Links */}
+              <div className="about-social-links">
+                {personalInfo.contact.github && (
+                  <a
+                    href={personalInfo.contact.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="about-social-icon-btn"
+                    aria-label="GitHub Profile"
+                  >
+                    <GithubIcon size={16} />
+                  </a>
                 )}
+                {personalInfo.contact.linkedin && (
+                  <a
+                    href={personalInfo.contact.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="about-social-icon-btn"
+                    aria-label="LinkedIn Profile"
+                  >
+                    <LinkedinIcon size={16} />
+                  </a>
+                )}
+                <button
+                  onClick={onBookCall}
+                  className="about-social-icon-btn"
+                  aria-label="Email or Message"
+                >
+                  <Mail size={16} />
+                </button>
               </div>
-            </div>
 
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '4px' }}>
-              {personalInfo.name}
-            </h3>
-
-            <div style={{ fontSize: '0.85rem', color: 'var(--accent-blue)', fontFamily: 'var(--font-mono)', marginBottom: '12px' }}>
-              {personalInfo.role}
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '14px', textAlign: 'left', fontSize: '0.85rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)' }}>
-                <MapPin size={14} color="#4F8CFF" />
-                <span>India</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)' }}>
-                <ShieldCheck size={14} color="#10B981" />
-                <span>Technical Vidya & NSS</span>
-              </div>
+              <button
+                onClick={onBookCall}
+                className="about-connect-btn"
+              >
+                <span>Connect With Me</span>
+                <ArrowRight size={14} />
+              </button>
             </div>
           </div>
 
-          {/* Column 2: First-Person Narrative */}
-          <div className="card about-narrative" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-            <div>
-              <h3 style={{ fontSize: '1.25rem', marginBottom: '16px', color: 'var(--text-primary)' }}>
-                Engineering Foundations & Community
-              </h3>
-              <p className="about-main-text">
+          {/* Right Column: Bio, Tech Stack & Experience Table */}
+          <div className="about-details-column">
+            {/* Bio Card */}
+            <div className="about-detail-card">
+              <h4 className="about-card-title">Who I Am &amp; What I Build</h4>
+              <p className="about-card-text">
                 {personalInfo.about}
               </p>
             </div>
 
-            <div style={{ marginTop: '24px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-              <span className="badge badge-accent">CSE • AI/ML</span>
-              <span className="badge">Technical Vidya Contributor</span>
-              <span className="badge">NSS Volunteer</span>
-            </div>
-          </div>
-
-          {/* Column 3: Three Focus Pillars */}
-          <div className="about-pillars">
-            {personalInfo.focusPoints.map((point, idx) => (
-              <div key={idx} className="pillar-card">
-                <div className="pillar-title">
-                  {iconMap[idx]}
-                  <span>{point.title}</span>
-                </div>
-                <p className="pillar-desc">{point.description}</p>
+            {/* Core Tech Stack Row */}
+            <div className="about-detail-card">
+              <h4 className="about-card-title">Core Tech Stack</h4>
+              <div className="about-tech-stack-row">
+                {stackIcons.map((tech, i) => (
+                  <div key={i} className="about-stack-badge" title={tech.name}>
+                    <span className="about-stack-icon">{tech.icon}</span>
+                    <span className="about-stack-label">{tech.name}</span>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+
+            {/* Experience / Timeline Table */}
+            <div className="about-detail-card">
+              <h4 className="about-card-title">Experience &amp; Community</h4>
+              <div className="about-experience-table">
+                {workTimelineData.map((item, idx) => (
+                  <div key={idx} className="experience-table-row">
+                    <div className="exp-role-cell">
+                      <span className="exp-role-text">{item.role}</span>
+                      <span className="exp-org-text">{item.organization}</span>
+                    </div>
+                    <div className="exp-year-cell">
+                      <span className="exp-year-badge">{item.year}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>

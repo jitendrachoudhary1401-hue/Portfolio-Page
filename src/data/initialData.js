@@ -94,6 +94,18 @@ export const initialProjects = [
     githubUrl: '',
     liveUrl: '',
     featured: true
+  },
+  {
+    id: 'cloud-developer-platform',
+    title: 'Cloud Developer Platform',
+    category: 'Full-Stack & Cloud Architecture',
+    problem: 'Modern developers need a resilient, low-latency portfolio with real-time cloud data synchronization, secure authentication, and dynamic asset management.',
+    contribution: 'Engineered a reactive React + Vite platform with Firebase Firestore, custom authentication, and dynamic certificate verification.',
+    outcome: 'Live cloud-connected platform allowing real-time profile updates, proof uploads, and inquiry tracking.',
+    technologies: ['React', 'Firebase', 'Firestore', 'CSS3', 'Vite'],
+    githubUrl: 'https://github.com/jitendrachoudhary1401-hue',
+    liveUrl: '',
+    featured: true
   }
 ];
 
@@ -236,74 +248,38 @@ export const servicesData = [
 ];
 
 export const statsData = [
-  { value: '3+', label: 'Years of Experience' },
-  { value: '140+', label: 'Projects & Problems Solved' },
-  { value: '500+', label: 'Peers & Community Impact' },
-  { value: '1M+', label: 'Coding & Practice Hours' }
+  { value: '3+', label: 'Years Tech Exploration' },
+  { value: '140+', label: 'Problems & Commits' },
+  { value: '500+', label: 'Community Peers' },
+  { value: '100%', label: 'Engineering Dedication' }
 ];
 
 export const workTimelineData = [
-  { role: 'Full-Stack Developer', organization: 'CampusCare & Rescue Paw', year: '2024' },
-  { role: 'Technical Contributor', organization: 'Technical Vidya', year: '2024' },
-  { role: 'Student Volunteer', organization: 'National Service Scheme (NSS)', year: '2023' }
+  { role: 'Technical Community Contributor', organization: 'Technical Vidya', year: 'Ongoing' },
+  { role: 'Student Volunteer & Social Impact', organization: 'National Service Scheme (NSS)', year: 'Ongoing' },
+  { role: 'B.Tech CSE (AI/ML)', organization: 'Engineering Specialization', year: 'Pursuing' }
 ];
 
-export const testimonialsData = [
+export const processSteps = [
   {
-    id: 1,
-    quote: "When working with Jitendra, we had great clarity, his technical ideas were amazing and execution was exceptionally fast.",
-    name: "Elena Matsuura",
-    role: "Finance Lead",
-    organization: "Zentircon",
-    companyBadge: "Google Partner",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80"
+    step: '01',
+    title: 'Discovery & Architecture',
+    description: 'Analyzing requirements, mapping user journeys, choosing the right stack, and structuring clean data models.'
   },
   {
-    id: 2,
-    quote: "What impressed me most was his ability to think beyond code. He was deeply involved in UX decisions and helped us identify user pain points before post-launch.",
-    name: "Alex Rivera",
-    role: "Tech Lead",
-    organization: "DevStudio",
-    companyBadge: "Google",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&h=120&q=80"
+    step: '02',
+    title: 'Development & Iteration',
+    description: 'Writing clean, modular code with modern component architectures, reactive state handling, and version control.'
   },
   {
-    id: 3,
-    quote: "Jitendra brings immense dedication and engineering curiosity. His contributions to peer learning sessions were invaluable to our team.",
-    name: "Priya Sharma",
-    role: "Community Lead",
-    organization: "Technical Vidya",
-    companyBadge: "TechVidya",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&h=120&q=80"
-  },
-  {
-    id: 4,
-    quote: "His focus on computer vision and AI fundamentals while maintaining clean code hygiene sets him apart as an aspiring engineer.",
-    name: "Dr. R. K. Verma",
-    role: "Faculty Mentor",
-    organization: "CSE Dept",
-    companyBadge: "Academia",
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&h=120&q=80"
-  },
-  {
-    id: 5,
-    quote: "A dedicated problem solver who steps forward during high-pressure deadlines and delivers reliable, beautiful results every time.",
-    name: "Amit Patel",
-    role: "Youth Lead",
-    organization: "NSS Impact",
-    companyBadge: "NSS India",
-    avatar: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=120&h=120&q=80"
-  },
-  {
-    id: 6,
-    quote: "His work on responsive frontend interfaces and seamless user flows demonstrates true product empathy and technical polish.",
-    name: "Sophia Chen",
-    role: "Product Designer",
-    organization: "UrbanFlow Lab",
-    companyBadge: "UrbanFlow",
-    avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&h=120&q=80"
+    step: '03',
+    title: 'Deployment & Scaling',
+    description: 'Deploying with Firebase and cloud infrastructure, optimizing load performance, and testing real-world reliability.'
   }
 ];
+
+// No mock client reviews — only real data
+export const testimonialsData = [];
 
 export const faqData = [
   {

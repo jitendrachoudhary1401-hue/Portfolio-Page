@@ -4,14 +4,11 @@ import {
   ExternalLink, 
   Search, 
   PlusCircle, 
-  Calendar, 
   Building,
-  FileCheck,
   ShieldCheck,
-  AlertCircle
+  FileCheck
 } from 'lucide-react';
 import { subscribeToCertificates } from '../services/certificateService';
-import { isFirebaseConfigured } from '../services/firebase';
 import { useAuth } from '../context/AuthContext';
 import { CertificateModal } from './CertificateModal';
 
@@ -27,7 +24,7 @@ export const Certificates = ({ onOpenAdmin }) => {
     setLoading(true);
     const unsubscribe = subscribeToCertificates(
       (certs) => {
-        setCertificates(certs);
+        setCertificates(certs || []);
         setLoading(false);
       },
       (error) => {
@@ -50,76 +47,33 @@ export const Certificates = ({ onOpenAdmin }) => {
 
     const matchesSearch =
       searchQuery.trim() === '' ||
-      cert.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      cert.organization.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      cert.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      cert.organization?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (cert.skills && cert.skills.some((s) => s.toLowerCase().includes(searchQuery.toLowerCase())));
 
     return matchesCategory && matchesSearch;
   });
 
   return (
-    <section id="certificates" className="section-wrapper" style={{ background: 'rgba(18, 23, 34, 0.25)' }}>
+    <section id="certificates" className="modern-section-wrapper">
       <div className="container">
-        <div className="section-header">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
-            <div>
-              <span className="section-tag">06 // Verified Credentials</span>
-              <h2 className="section-title">Certificates & Licenses</h2>
-              <p className="section-desc">
-                Verified technical credentials and certifications stored and managed through Cloud Firestore and Firebase Storage.
-              </p>
-            </div>
-
-            <button
-              onClick={onOpenAdmin}
-              className="btn btn-secondary btn-sm"
-              title="Admin Certificate Portal"
-            >
-              <PlusCircle size={15} color="#4F8CFF" />
-              <span>{currentUser ? 'Manage Certificates' : 'Admin Portal'}</span>
-            </button>
-          </div>
+        {/* Centered Section Header */}
+        <div className="section-centered-header">
+          <h2 className="section-centered-title">Certificates &amp; Credentials</h2>
+          <p className="section-centered-subtitle">
+            Verified academic milestones and technical certifications synced with Cloud Firestore.
+          </p>
         </div>
 
-        {/* Firebase Environment Status Notice (if not yet configured in .env) */}
-        {!isFirebaseConfigured && (
-          <div style={{
-            background: 'rgba(245, 158, 11, 0.08)',
-            border: '1px solid rgba(245, 158, 11, 0.25)',
-            borderRadius: 'var(--radius-sm)',
-            padding: '12px 18px',
-            marginBottom: '24px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '12px',
-            flexWrap: 'wrap'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <AlertCircle size={18} color="#F59E0B" />
-              <span style={{ fontSize: '0.86rem', color: 'var(--text-secondary)' }}>
-                Firebase backend ready: add your credentials in <code>.env</code> for live Cloud Firestore & Storage syncing, or use Admin Portal.
-              </span>
-            </div>
-            <button
-              onClick={onOpenAdmin}
-              className="btn btn-secondary btn-sm"
-              style={{ fontSize: '0.78rem', padding: '4px 10px' }}
-            >
-              Setup Guide
-            </button>
-          </div>
-        )}
-
         {/* Toolbar: Category Filters & Search */}
-        <div className="cert-toolbar">
-          <div className="cert-filter-pills" role="tablist">
+        <div className="modern-cert-toolbar">
+          <div className="modern-filter-pills" role="tablist">
             {categories.map((cat) => (
               <button
                 key={cat}
                 role="tab"
                 aria-selected={activeCategory === cat}
-                className={`filter-pill ${activeCategory === cat ? 'active' : ''}`}
+                className={`modern-pill ${activeCategory === cat ? 'active' : ''}`}
                 onClick={() => setActiveCategory(cat)}
               >
                 {cat}
@@ -127,71 +81,64 @@ export const Certificates = ({ onOpenAdmin }) => {
             ))}
           </div>
 
-          <div className="cert-search-box">
-            <Search size={16} color="var(--text-muted)" />
+          <div className="modern-search-box">
+            <Search size={15} color="#64748B" />
             <input
               type="text"
-              className="cert-search-input"
-              placeholder="Search by title, issuer, skill..."
+              className="modern-search-input"
+              placeholder="Filter credentials..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              aria-label="Search certificates"
+              aria-label="Filter certificates"
             />
           </div>
         </div>
 
         {/* Certificates Grid */}
-        <div className="certificates-grid">
+        <div className="modern-certificates-grid">
           {filteredCertificates.length > 0 ? (
             filteredCertificates.map((cert) => (
-              <div key={cert.id} className="cert-card">
-                <div>
-                  <div className="cert-card-top">
-                    <span className="cert-org-badge">
-                      <Building size={12} style={{ display: 'inline', marginRight: '4px' }} />
-                      {cert.organization}
-                    </span>
-                    <span className="cert-date">{cert.issueDate}</span>
-                  </div>
-
-                  <h3 className="cert-title">{cert.title}</h3>
-
-                  {cert.description && <p className="cert-desc">{cert.description}</p>}
-
-                  {cert.skills && cert.skills.length > 0 && (
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '14px' }}>
-                      {cert.skills.slice(0, 3).map((skill, sIdx) => (
-                        <span key={sIdx} className="badge" style={{ fontSize: '0.72rem', padding: '2px 8px' }}>
-                          {skill}
-                        </span>
-                      ))}
-                      {cert.skills.length > 3 && (
-                        <span className="badge" style={{ fontSize: '0.72rem', padding: '2px 8px' }}>
-                          +{cert.skills.length - 3}
-                        </span>
-                      )}
-                    </div>
-                  )}
+              <div key={cert.id} className="modern-cert-card">
+                <div className="cert-card-top-row">
+                  <span className="cert-issuer-badge">
+                    <Building size={12} style={{ display: 'inline', marginRight: '4px' }} />
+                    {cert.organization}
+                  </span>
+                  {cert.issueDate && <span className="cert-date-text">{cert.issueDate}</span>}
                 </div>
 
-                <div className="cert-actions">
+                <h3 className="cert-card-title">{cert.title}</h3>
+
+                {cert.description && (
+                  <p className="cert-card-desc">{cert.description}</p>
+                )}
+
+                {cert.skills && cert.skills.length > 0 && (
+                  <div className="cert-skills-tags">
+                    {cert.skills.map((skill, idx) => (
+                      <span key={idx} className="cert-skill-tag">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                <div className="cert-card-actions">
                   <button
-                    className="btn btn-secondary btn-sm"
                     onClick={() => setSelectedCert(cert)}
-                    style={{ flex: 1 }}
+                    className="cert-action-btn primary"
                   >
                     <FileCheck size={14} />
-                    <span>View Certificate</span>
+                    <span>View Proof</span>
                   </button>
 
-                  {cert.verificationUrl && (
+                  {cert.credentialUrl && (
                     <a
-                      href={cert.verificationUrl}
+                      href={cert.credentialUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="btn btn-secondary btn-sm"
-                      title="Verify Official Credential"
-                      aria-label={`Verify ${cert.title}`}
+                      className="cert-action-btn secondary"
+                      aria-label="Verify Certificate Link"
                     >
                       <ExternalLink size={14} />
                     </a>
@@ -200,32 +147,29 @@ export const Certificates = ({ onOpenAdmin }) => {
               </div>
             ))
           ) : (
-            <div className="empty-cert-card">
-              <div className="empty-cert-icon">
-                <Award size={28} />
-              </div>
-              <h3 className="empty-cert-title">
-                {searchQuery || activeCategory !== 'All'
-                  ? 'No matching certificates found'
-                  : 'Certificates Database Initialized'}
-              </h3>
-              <p className="empty-cert-desc">
-                {searchQuery || activeCategory !== 'All'
-                  ? 'Try adjusting your search criteria or selecting a different category filter.'
-                  : 'Real certificates can be published dynamically via the Admin Portal to Firebase Cloud Firestore and Firebase Storage.'}
+            <div className="cert-empty-state">
+              <ShieldCheck size={36} color="#3B82F6" style={{ margin: '0 auto 12px' }} />
+              <h4 style={{ color: '#FFFFFF', marginBottom: '8px' }}>Verified Credentials Repository</h4>
+              <p style={{ color: '#94A3B8', fontSize: '0.9rem', maxWidth: '480px', margin: '0 auto 16px' }}>
+                Technical certifications and event credentials are ready to be managed via Cloud Firestore.
               </p>
-              <button onClick={onOpenAdmin} className="btn btn-primary btn-sm">
-                <PlusCircle size={15} />
-                <span>Upload First Certificate</span>
+              <button
+                onClick={onOpenAdmin}
+                className="hero-btn-primary"
+                style={{ padding: '8px 20px', fontSize: '0.85rem' }}
+              >
+                <PlusCircle size={14} style={{ marginRight: '6px' }} />
+                <span>Open Admin Portal</span>
               </button>
             </div>
           )}
         </div>
       </div>
 
+      {/* Certificate Modal */}
       {selectedCert && (
         <CertificateModal
-          certificate={selectedCert}
+          cert={selectedCert}
           onClose={() => setSelectedCert(null)}
         />
       )}

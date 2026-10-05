@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, Shield, Lock, ExternalLink, Terminal } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
-export const Navbar = ({ onOpenAdmin }) => {
+export const Navbar = ({ onOpenAdmin, onBookCall }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
+  const [activeSection, setActiveSection] = useState('hero');
   const { currentUser } = useAuth();
 
   useEffect(() => {
@@ -14,13 +14,12 @@ export const Navbar = ({ onOpenAdmin }) => {
 
       const sections = [
         'hero',
-        'about',
-        'skills',
         'projects',
-        'experience',
+        'services',
+        'process',
+        'about',
         'certificates',
-        'achievements',
-        'education',
+        'faq',
         'contact'
       ];
 
@@ -28,7 +27,7 @@ export const Navbar = ({ onOpenAdmin }) => {
         const el = document.getElementById(sectionId);
         if (el) {
           const rect = el.getBoundingClientRect();
-          if (rect.top <= 120 && rect.bottom >= 120) {
+          if (rect.top <= 160 && rect.bottom >= 160) {
             setActiveSection(sectionId);
             break;
           }
@@ -41,30 +40,22 @@ export const Navbar = ({ onOpenAdmin }) => {
   }, []);
 
   const navItems = [
-    { label: 'About', href: '#about', id: 'about' },
-    { label: 'Skills', href: '#skills', id: 'skills' },
     { label: 'Projects', href: '#projects', id: 'projects' },
-    { label: 'Experience', href: '#experience', id: 'experience' },
+    { label: 'Services', href: '#services', id: 'services' },
+    { label: 'Process', href: '#process', id: 'process' },
+    { label: 'About', href: '#about', id: 'about' },
     { label: 'Certificates', href: '#certificates', id: 'certificates' },
-    { label: 'Achievements', href: '#achievements', id: 'achievements' },
-    { label: 'Education', href: '#education', id: 'education' },
-    { label: 'Contact', href: '#contact', id: 'contact' }
+    { label: 'FAQ', href: '#faq', id: 'faq' }
   ];
 
   return (
-    <header className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+    <header className={`navbar modern-navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="container navbar-inner">
         <a href="#hero" className="brand-logo" aria-label="Jitendra Choudhary Home">
-          <div className="brand-symbol">
-            <Terminal size={18} />
-          </div>
-          <div className="brand-text">
-            <span className="brand-name">JITENDRA</span>
-            <span className="brand-tag"> ~ portfolio</span>
-          </div>
+          <span className="brand-name-main">JITENDRA CHOUDHARY</span>
         </a>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Navigation Links */}
         <nav aria-label="Main Navigation" className="desktop-nav">
           <ul className="nav-links">
             {navItems.map((item) => (
@@ -80,16 +71,23 @@ export const Navbar = ({ onOpenAdmin }) => {
           </ul>
         </nav>
 
-        {/* Nav Actions */}
+        {/* Nav Actions: Book a Call Pill & Admin Button */}
         <div className="nav-actions">
           <button
+            onClick={onBookCall}
+            className="navbar-pill-cta"
+            aria-label="Book a call with Jitendra"
+          >
+            Book a call
+          </button>
+
+          <button
             onClick={onOpenAdmin}
-            className="admin-nav-btn"
-            title={currentUser ? `Logged in as ${currentUser.email}` : "Admin Portal / Firebase Management"}
+            className="admin-nav-icon-btn"
+            title={currentUser ? `Logged in as ${currentUser.email}` : "Admin Portal / Cloud Manager"}
             aria-label="Admin Portal"
           >
-            {currentUser ? <Shield size={14} color="#10B981" /> : <Lock size={14} />}
-            <span>{currentUser ? 'Admin (Active)' : 'Admin'}</span>
+            {currentUser ? <Shield size={16} color="#10B981" /> : <Lock size={15} />}
           </button>
 
           <button
@@ -116,6 +114,15 @@ export const Navbar = ({ onOpenAdmin }) => {
               {item.label}
             </a>
           ))}
+          <button
+            onClick={() => {
+              setMobileMenuOpen(false);
+              onBookCall && onBookCall();
+            }}
+            className="navbar-pill-cta mobile-cta-btn"
+          >
+            Book a call
+          </button>
         </div>
       )}
     </header>

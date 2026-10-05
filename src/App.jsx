@@ -1,82 +1,99 @@
 import React, { useState } from 'react';
 import { AuthProvider } from './context/AuthContext';
 import { Navbar } from './components/Navbar';
-import { BentoDashboard } from './components/BentoDashboard';
-import { IdentityStrip } from './components/IdentityStrip';
-import { About } from './components/About';
-import { Skills } from './components/Skills';
+import { Hero } from './components/Hero';
+import { TechStrip } from './components/TechStrip';
 import { Projects } from './components/Projects';
-import { Experience } from './components/Experience';
-import { LearningJourney } from './components/LearningJourney';
+import { Services } from './components/Services';
+import { Process } from './components/Process';
+import { About } from './components/About';
 import { Certificates } from './components/Certificates';
-import { Achievements } from './components/Achievements';
-import { Education } from './components/Education';
-import { CurrentlyBuilding } from './components/CurrentlyBuilding';
-import { Contact } from './components/Contact';
+import { FAQ } from './components/FAQ';
+import { CtaBanner } from './components/CtaBanner';
 import { Footer } from './components/Footer';
 import { AdminModal } from './components/AdminModal';
+import { BookCallModal } from './components/BookCallModal';
 
 import './styles/theme.css';
 import './styles/components.css';
-import './styles/bento.css';
+import './styles/modern-portfolio.css';
 import './styles/admin.css';
 
 export function App() {
   const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [isBookCallOpen, setIsBookCallOpen] = useState(false);
+
+  const handleOpenAdmin = () => setIsAdminOpen(true);
+  const handleOpenBookCall = () => setIsBookCallOpen(true);
 
   return (
     <AuthProvider>
       <div className="portfolio-app">
-        {/* Skip to Content for Accessibility */}
+        {/* Accessibility Skip Link */}
         <a href="#hero" className="skip-to-content">
           Skip to main content
         </a>
 
-        {/* 01: Sticky Navigation Bar on Scroll */}
-        <Navbar onOpenAdmin={() => setIsAdminOpen(true)} />
+        {/* 01: Top Fixed Navigation Bar */}
+        <Navbar 
+          onOpenAdmin={handleOpenAdmin} 
+          onBookCall={handleOpenBookCall} 
+        />
 
         <main id="main-content">
-          {/* 02: Master Bento Showcase (Pixel-Perfect to Reference Design) */}
-          <BentoDashboard onOpenAdmin={() => setIsAdminOpen(true)} />
+          {/* 02: Full-Width Digital Experiences Hero */}
+          <Hero 
+            onOpenAdmin={handleOpenAdmin} 
+            onBookCall={handleOpenBookCall} 
+          />
 
-          {/* 03: Quick Identity Strip */}
-          <IdentityStrip />
+          {/* 03: Core Technologies Strip */}
+          <TechStrip />
 
-          {/* 04: About Me */}
-          <About onOpenAdmin={() => setIsAdminOpen(true)} />
-
-          {/* 05: Skills & Tech Stack */}
-          <Skills />
-
-          {/* 06: Featured Projects */}
+          {/* 04: Recent Projects (2x2 Grid with Browser Mockup Frames) */}
           <Projects />
 
-          {/* 07: Experience & Community Involvement */}
-          <Experience />
+          {/* 05: Services Grid & Integrated Stats Counter Strip */}
+          <Services />
 
-          {/* 08: Learning & Development Journey */}
-          <LearningJourney />
+          {/* 06: Process (01 Discovery, 02 Development, 03 Deployment + CTA) */}
+          <Process 
+            onBookCall={handleOpenBookCall} 
+          />
 
-          {/* 09: Certificates (Cloud Firestore + Storage Integrated) */}
-          <Certificates onOpenAdmin={() => setIsAdminOpen(true)} />
+          {/* 07: About Me (2-Column Bento: Profile Card + Bio + Stack + Timeline) */}
+          <About 
+            onOpenAdmin={handleOpenAdmin} 
+            onBookCall={handleOpenBookCall} 
+          />
 
-          {/* 10: Honors & Achievements */}
-          <Achievements />
+          {/* 08: Verified Certificates & Credentials (Cloud-synced with Firestore) */}
+          <Certificates 
+            onOpenAdmin={handleOpenAdmin} 
+          />
 
-          {/* 11: Education */}
-          <Education />
+          {/* 09: Frequently Asked Questions (Interactive Accordion) */}
+          <FAQ />
 
-          {/* 12: Currently Building */}
-          <CurrentlyBuilding />
-
-          {/* 13: Contact & Message Transmit */}
-          <Contact />
+          {/* 10: Call to Action Banner ("Your vision, my expertise...") */}
+          <CtaBanner 
+            onBookCall={handleOpenBookCall} 
+          />
         </main>
 
-        {/* 14: Minimal Technical Footer */}
-        <Footer onOpenAdmin={() => setIsAdminOpen(true)} />
+        {/* 11: Giant Typography Watermark Footer */}
+        <Footer 
+          onOpenAdmin={handleOpenAdmin} 
+          onBookCall={handleOpenBookCall} 
+        />
 
-        {/* 15: Admin & Certificate Management Modal */}
+        {/* Book a Call / Connect Modal */}
+        <BookCallModal 
+          isOpen={isBookCallOpen} 
+          onClose={() => setIsBookCallOpen(false)} 
+        />
+
+        {/* Admin Portal Modal (Profile Photo & Certificate Management) */}
         <AdminModal
           isOpen={isAdminOpen}
           onClose={() => setIsAdminOpen(false)}
